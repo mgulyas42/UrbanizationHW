@@ -1,6 +1,9 @@
 
 var TILE_SIZE = 620*620;
 
+
+const ZOOM_LEVEL = 16
+
 function createInfoWindowContent(latLng, zoom) {
     const scale = 1 << zoom;
     const worldCoordinate = project(latLng);
@@ -36,8 +39,11 @@ function project(latLng) {
     ];
 }
 
+//47.190287|18.584784 ==> 18.584784|47.190287
+
 
 console.log(createInfoWindowContent({
-    lat: 41.85,
-    lng: -87.65}, 2))
+    lat: 18.584784,
+    lng: 47.190287
+}, ZOOM_LEVEL))
 

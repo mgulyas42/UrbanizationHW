@@ -33,10 +33,9 @@ var openSeaMapLayer = new TileLayer({
 var mySuperLayer = new TileLayer({
     source: new OSM({
         attributions: [
-            'All maps © <a href="http://www.openseamap.org/">OpenSeaMap</a>',
+            'All maps © <a href="https://www.opencyclemap.org/">OpenCycleMap</a>',
             ATTRIBUTION ],
-        opaque: false,
-        url: 'http://localhost:3000/proxy',
+        url: 'http://localhost:3000/proxy/{z}/{x}/{y}',
     }),
 });
 
@@ -44,7 +43,7 @@ var mySuperLayer = new TileLayer({
 // Map views always need a projection.  Here we just want to map image
 // coordinates directly to map coordinates, so we create a projection that uses
 // the image extent in pixels.
-var extent = [0, 0, 1/2, 1];
+var extent = [0, 0, 16, 16];
 //extent = [18.584784, 47.190287, 50, 50]
 var projection = new Projection({
     code: 'xkcd-image',
@@ -56,13 +55,13 @@ var myImageLayer = new ImageLayer({
     source: new Static({
         attributions: '© <a href="http://xkcd.com/license.html">xkcd</a>',
         url: 'http://localhost:3000/proxy',
-        projection: projection,
-        resolutions: [62, 62],
+        projection: 'EPSG:4326',
+        resolutions: [16, 16],
         imageExtent: extent,
     }),
     //visible: false,
-    minZoom: 2,
-    maxZoom: 16,
+    minZoom: 10,
+    maxZoom: 18,
 })
 /*
 var map = new Map({
@@ -78,13 +77,13 @@ var map = new Map({
 
 
 var map = new Map({
-    layers: [ openCycleMapLayer, myImageLayer ],
+    layers: [ openCycleMapLayer, mySuperLayer ],
     target: 'map',
     view: new View({
         projection: 'EPSG:4326',
         center: [18.584784, 47.190287],
-        zoom: 2,
-        maxZoom: 16,
+        zoom: 15,
+        maxZoom: 18,
     }),
 });
 //47.190287	18.584784
