@@ -44,7 +44,7 @@ var mySuperLayer = new TileLayer({
 // Map views always need a projection.  Here we just want to map image
 // coordinates directly to map coordinates, so we create a projection that uses
 // the image extent in pixels.
-var extent = [0, 0, 1, 1];
+var extent = [0, 0, 1/2, 1];
 //extent = [18.584784, 47.190287, 50, 50]
 var projection = new Projection({
     code: 'xkcd-image',
