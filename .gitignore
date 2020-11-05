@@ -1,1 +1,3 @@
 /openlayers/package.json
+/openlayers/node_modules
+/openlayers/dist
