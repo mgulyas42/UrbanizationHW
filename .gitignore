@@ -1,3 +1,5 @@
 /openlayers/package.json
 /openlayers/node_modules
 /openlayers/dist
+/openlayers/.cache
+/openlayers/.idea
