@@ -4,20 +4,23 @@ import {Point} from 'ol/geom';
 import {Vector} from 'ol/source';
 
 
-export function addMarker(item) {
+export function addMarker(items) {
+    let features = [];
+    items.forEach((item) => {
+        const lonlat = fromLonLat([item.lng, item.lat]);
 
-    const lonlat = fromLonLat(item);
-    console.log(lonlat);
+        let point = new Point(lonlat);
 
-    let point = new Point(lonlat);
+        console.log(point);
 
-    console.log(point);
+        let feature = new Feature({
+            geometry: point,
+            data: item,
+        });
+        features.push(feature);
 
-    let feature = new Feature({
-        geometry: point
-    });
-
+    })
     return new Vector({
-        features: [feature]
+        features: features
     });
 }

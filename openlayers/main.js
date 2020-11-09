@@ -8,6 +8,7 @@ import * as olProj from 'ol/proj';
 import {TileDebug} from 'ol/source';
 import {addMarker} from './service/marker'
 import {Icon, Style} from 'ol/style';
+import * as axios from 'axios';
 
 var mySuperLayer = new TileLayer({
 
@@ -50,10 +51,33 @@ var map = new Map({
     }),
 });
 
+axios.default.get('http://localhost:3000/marker').then((a) => {
+    map.addLayer(new Vector({
+        source: addMarker(a.data),
+        style: new Style({
+            image: new Icon({
+                anchor: [0.5, 46],
+                anchorXUnits: 'fraction',
+                anchorYUnits: 'pixels',
+                src: 'https://openlayers.org/en/latest/examples/data/icon.png'
+            })
+        })
+    }),);
+})
+
 map.on('click', function(evt) {
     var feature = map.forEachFeatureAtPixel(evt.pixel,
         function (feature) {
             return feature;
         });
-    console.warn(feature);
+    map.getView().animate({
+        center: olProj.transform([feature.values_.data.lng, feature.values_.data.lat], 'EPSG:4326', 'EPSG:3857'),
+        zoom: 18,
+        duration: Math.abs(map.getView().getZoom() - 18) * 200
+    })
+
+    const id = feature.values_.data.id
+    axios.default.get(`http://localhost:3000/marker/meta/${id}`).then((a) => {
+         console.log(a);
+    });
 });

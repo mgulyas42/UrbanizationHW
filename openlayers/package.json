@@ -11,6 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.21.0",
+    "http-call": "^5.3.0",
     "ol": "^6.4.3"
   },
   "devDependencies": {
