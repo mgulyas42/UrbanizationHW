@@ -49,3 +49,11 @@ var map = new Map({
         maxZoom: 18,
     }),
 });
+
+map.on('click', function(evt) {
+    var feature = map.forEachFeatureAtPixel(evt.pixel,
+        function (feature) {
+            return feature;
+        });
+    console.warn(feature);
+});
