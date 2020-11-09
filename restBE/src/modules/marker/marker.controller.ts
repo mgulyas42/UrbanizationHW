@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Req, Res } from '@nestjs/common';
 import { MarkerService } from "./marker.service";
 
 @Controller('marker')
@@ -7,8 +7,13 @@ export class MarkerController {
         private markerService: MarkerService
     ) {}
 
-    @Get()
+    @Get('/')
     getAll() {
         return this.markerService.getDataFromCsv();
+    }
+
+    @Get('/meta/:id')
+    getMetaData(@Req() request) {
+        return this.markerService.getMetaData(request.params.id);
     }
 }
