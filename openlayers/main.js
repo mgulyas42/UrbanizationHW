@@ -42,6 +42,7 @@ var map = new Map({
                 })
             })
         }),
+        mySuperLayer
     ],
     target: 'map',
     view: new View({
@@ -52,17 +53,23 @@ var map = new Map({
 });
 
 axios.default.get('http://localhost:3000/marker').then((a) => {
+    console.log(a.data);
     map.addLayer(new Vector({
         source: addMarker(a.data),
         style: new Style({
             image: new Icon({
+                /*TODO:
+                0.5,0.5-el pont a közepén lesz
+                Zoomlevelekhez hogy fogok igazodni? elvileg a scale optional a zoomlevelt is állítsam be
+                 */
+
                 anchor: [0.5, 46],
                 anchorXUnits: 'fraction',
                 anchorYUnits: 'pixels',
                 src: 'https://openlayers.org/en/latest/examples/data/icon.png'
             })
         })
-    }),);
+    }));
 })
 
 map.on('click', function(evt) {
