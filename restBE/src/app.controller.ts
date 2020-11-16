@@ -1,7 +1,6 @@
 import {Controller, Get, Logger, Param, Req, Res} from '@nestjs/common';
 import { AppService } from './app.service';
 import { join, resolve } from 'path';
-var Jimp = require('jimp');
 
 @Controller()
 export class AppController {
