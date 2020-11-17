@@ -7,19 +7,9 @@ import View from 'ol/View';
 import * as olProj from 'ol/proj';
 import {TileDebug} from 'ol/source';
 import {addMarker} from './service/marker'
+import {addTiles} from './service/tile'
 import {Icon, Style} from 'ol/style';
 import * as axios from 'axios';
-
-var mySuperLayer = new TileLayer({
-
-    source: new OSM({
-        attributions: [
-            'All maps © <a href="https://www.opencyclemap.org/">OpenCycleMap</a>',
-            ATTRIBUTION ],
-        url: 'http://localhost:3000/proxy/{z}/{x}/{y}',
-        //url: 'https://{a-c}.tile.thunderforest.com/cycle/{z}/{x}/{y}.png' + '?apikey=0e6fc415256d4fbb9b5166a718591d71',
-    })
-})
 
 const coord = olProj.transform([18.584784, 47.190287], 'EPSG:4326', 'EPSG:3857');
 
@@ -41,8 +31,7 @@ var map = new Map({
                     src: 'https://openlayers.org/en/latest/examples/data/icon.png'
                 })
             })
-        }),
-        mySuperLayer
+        })
     ],
     target: 'map',
     view: new View({
@@ -56,13 +45,10 @@ axios.default.get('http://localhost:3000/marker').then((a) => {
     console.log(a.data);
     map.addLayer(new Vector({
         source: addMarker(a.data),
+        maxZoom: 18,
+        minZoom: 2,
         style: new Style({
             image: new Icon({
-                /*TODO:
-                0.5,0.5-el pont a közepén lesz
-                Zoomlevelekhez hogy fogok igazodni? elvileg a scale optional a zoomlevelt is állítsam be
-                 */
-
                 anchor: [0.5, 46],
                 anchorXUnits: 'fraction',
                 anchorYUnits: 'pixels',
@@ -70,6 +56,8 @@ axios.default.get('http://localhost:3000/marker').then((a) => {
             })
         })
     }));
+
+    addTiles(map, a.data);
 })
 
 map.on('click', function(evt) {
@@ -78,8 +66,8 @@ map.on('click', function(evt) {
             return feature;
         });
     map.getView().animate({
-        center: olProj.transform([feature.values_.data.lng, feature.values_.data.lat], 'EPSG:4326', 'EPSG:3857'),
-        zoom: 18,
+        center: olProj.transform([feature.values_.data.lat, feature.values_.data.lng], 'EPSG:4326', 'EPSG:3857'),
+        zoom: 17,
         duration: Math.abs(map.getView().getZoom() - 18) * 200
     })
 

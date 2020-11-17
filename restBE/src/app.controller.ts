@@ -42,6 +42,12 @@ export class AppController {
     }
   }
 
+  @Get("/almafa/:id")
+  getImages(@Req() request, @Res() res) {
+    console.log(request.params);
+    res.download(resolve(join(__dirname, `./datas/${request.params.id}/01.bmp`)));
+  }
+
   tile2long(x,z) {
     return (x/Math.pow(2,z)*360-180);
   }
