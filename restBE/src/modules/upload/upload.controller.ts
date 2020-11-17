@@ -19,7 +19,7 @@ export class UploadController {
   }
 
   @Post('upload')
-  @UseInterceptors(FileInterceptor('file', {
+  @UseInterceptors(FileInterceptor('filename', {
     storage: diskStorage({
       destination: './dist/uploads',
       filename: (req, file, cb) => {
@@ -29,7 +29,7 @@ export class UploadController {
   }))
   uploadFile(@UploadedFile() file) {
 
-
+    console.debug('asd');
     const zip = new StreamZip({
       file: file.path,
       storeEntries: true
