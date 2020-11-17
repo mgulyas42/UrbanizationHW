@@ -17,7 +17,7 @@
             z-index: 1; /* Stay on top */
             top: 0;
             left: 0;
-            background-color: #111; /* Black*/
+            background-color: #444444;
             overflow-x: hidden; /* Disable horizontal scroll */
             padding-top: 60px; /* Place content 60px from the top */
             transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
@@ -51,7 +51,7 @@
         .openbtn {
             font-size: 20px;
             cursor: pointer;
-            background-color: #111;
+            background-color: #444444;
             color: white;
             padding: 10px 15px;
             border: none;
@@ -64,7 +64,7 @@
         /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
         #main {
             transition: margin-left .5s; /* If you want a transition effect */
-            padding: 20px;
+            padding: 5px;
         }
 
         /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
@@ -76,7 +76,8 @@
 </head>
 <body>
 <div id="mySidebar" class="sidebar">
-    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="javascript:void(0)" class="closebtn" onclick="openNav()">&times;</a>
+    <img src="http://oktatas.mik.uni-pannon.hu/pluginfile.php/1/theme_enlightlite/logo/1604907398/cimer_szines_99_transparent.png"></img>
     <form action="http://localhost:3000/upload" method="post" enctype="multipart/form-data">
         <input type="file" id="myFile" name="filename">
         <input type="submit">
@@ -86,23 +87,21 @@
 
 <div id="map" class="map">
     <div id="main">
-        <button class="openbtn" onclick="openNav()">&#9776; Open Sidebar</button>
-        <h2>Collapsed Sidebar</h2>
-        <p>Content...</p>
+        <button class="openbtn" onclick="openNav()">&#9776; Menu</button>
     </div>
 </div>
 <script src="main.js"></script>
 <script>
-    /* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
+  let opened = false;
     function openNav() {
+      opened = !opened;
+      if (opened) {
         document.getElementById("mySidebar").style.width = "250px";
         document.getElementById("main").style.marginLeft = "250px";
-    }
-
-    /* Set the width of the sidebar to 0 and the left margin of the page content to 0 */
-    function closeNav() {
+      } else {
         document.getElementById("mySidebar").style.width = "0";
         document.getElementById("main").style.marginLeft = "0";
+      }
     }
 </script>
 </body>

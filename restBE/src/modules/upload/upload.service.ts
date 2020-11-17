@@ -12,7 +12,7 @@ export class UploadService {
     return CSV.parse(dataCSVString);
   }
 
-  fetchTeachingCSVs(zip, dirs){
+  fetchTeachingCSVs(zip, dirs) {
     return dirs.map(dir => dir + "/teaching.csv")
       .map(zip.entry)
       .map(entry => zip.entryDataSync(entry))
@@ -21,7 +21,7 @@ export class UploadService {
       .map(CSV.parse);
   }
 
-  fetchBMPs(zip, dirs){
+  fetchBMPs(zip, dirs) {
     return dirs.map(dir => dir + "/01.bmp")
       .map(zip.entry)
       .map(entry => zip.entryDataSync(entry));
