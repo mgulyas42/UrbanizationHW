@@ -13,7 +13,7 @@ import * as axios from 'axios';
 
 const coord = olProj.transform([18.584784, 47.190287], 'EPSG:4326', 'EPSG:3857');
 
-var map = new Map({
+const map = new Map({
     layers: [
         new TileLayer({
             source: new OSM(),
@@ -40,6 +40,10 @@ var map = new Map({
         maxZoom: 18,
     }),
 });
+
+
+document.getElementById("kaki").addEventListener("click", (event) => console.log(event));
+
 
 axios.default.get('http://localhost:3000/marker').then((a) => {
     console.log(a.data);
@@ -76,3 +80,5 @@ map.on('click', function(evt) {
          console.log(a);
     });
 });
+
+exports.map=map;
