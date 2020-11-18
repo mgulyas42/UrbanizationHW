@@ -1,21 +1,17 @@
 import { Controller, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
-import { InjectConnection } from '@nestjs/mongoose';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Connection } from 'mongoose';
+import { join, resolve } from "path";
 import { diskStorage } from 'multer';
-import * as StreamZip from "node-stream-zip";
 import { UploadService } from './upload.service';
-
+import * as extract from "extract-zip";
+import * as fs from "fs";
 
 @Controller()
 export class UploadController {
 
   constructor(
     private service: UploadService,
-    @InjectConnection() private connection: Connection
-  ) {
-    this.connection.db.collections().then(collection => console.log(collection.map(coll => coll.collectionName)));
-  }
+  ) {}
 
   @Post('upload')
   @UseInterceptors(
@@ -29,15 +25,11 @@ export class UploadController {
     }) as any
     // workaround while the FileInterceptor gives back type not directly the interceptor (but it works)
   )
-  uploadFile(@UploadedFile() file) {
+  async uploadFile(@UploadedFile() file) {
+    await extract(file.path, {dir: resolve(join(__dirname, `../../datas/${file.filename.split('.').slice(0, -1).join('.')}`))})
+    await fs.unlinkSync(file.path);
 
-    const zip = new StreamZip({
-      file: file.path,
-      storeEntries: true
-    });
-
-
-    zip.on('ready', () => {
+    /*zip.on('ready', () => {
 
       const dataCSV = this.service.fetchDataCSV(zip);
 
@@ -46,13 +38,10 @@ export class UploadController {
       const bmpFiles = this.service.fetchBMPs(zip, directories);
 
       const teachingCSVs = this.service.fetchTeachingCSVs(zip, directories);
-      /*
-        TODO: Upload to database
-       */
 
       console.log(dataCSV);
 
       zip.close()
-    });
+    });*/
   }
 }

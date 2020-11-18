@@ -35,9 +35,9 @@ export class AppController {
     }
   } */
 
-  @Get("/almafa/:id")
+  @Get("/almafa/:path/:id")
   getImage(@Req() request, @Res() res) {
-    const imgPath = resolve(join(__dirname, `./datas/${request.params.id}/01.bmp`));
+    const imgPath = resolve(join(__dirname, `./datas/${request.params.path}/${request.params.id}/01.bmp`));
     res.download(imgPath);
     Logger.log(`Image loaded: ${imgPath}`);
   }

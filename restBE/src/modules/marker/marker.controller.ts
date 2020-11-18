@@ -13,8 +13,8 @@ export class MarkerController {
     return this.markerService.getDataFromCsv();
   }
 
-  @Get('/meta/:id')
+  @Get('/meta/:path/:id')
   getMetaData(@Req() request) {
-    return this.markerService.getMetaData(request.params.id);
+    return this.markerService.getMetaData(request.params.path, request.params.id);
   }
 }

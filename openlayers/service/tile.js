@@ -16,21 +16,24 @@ function addTile(lat, lng) {
 }
 
 export function addTiles(map, data) {
-  data.forEach((element) => {
-    map.addLayer(
-      new LayerVector({
-        source: addTile(element.lat, element.lng),
-        maxZoom: 17.1,
-        minZoom: 16.9,
-        style: new Style({
-          image: new Icon({
-            anchor: [310, 310],
-            anchorXUnits: 'pixels',
-            anchorYUnits: 'pixels',
-            src: `http://localhost:3000/almafa/${element.id}`
+  for (const [packageName, values] of Object.entries(data)) {
+    console.log(packageName);
+    values.forEach((element) => {
+      map.addLayer(
+        new LayerVector({
+          source: addTile(element.lat, element.lng),
+          maxZoom: 17.5,
+          minZoom: 15.5,
+          style: new Style({
+            image: new Icon({
+              anchor: [310, 310],
+              anchorXUnits: 'pixels',
+              anchorYUnits: 'pixels',
+              src: `http://localhost:3000/almafa/${packageName}/${element.id}`
+            })
           })
         })
-      })
-    );
-  })
+      );
+    })
+  }
 }
