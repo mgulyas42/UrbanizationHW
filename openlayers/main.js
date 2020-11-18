@@ -50,20 +50,23 @@ axios.default.get('http://localhost:3000/marker').then((a) => {
 })
 
 map.on('click', function(evt) {
-    var feature = map.forEachFeatureAtPixel(evt.pixel,
-        function (feature) {
-            return feature;
-        });
-    map.getView().animate({
-        center: olProj.transform([feature.values_.data.lat, feature.values_.data.lng], 'EPSG:4326', 'EPSG:3857'),
-        zoom: 17,
-        duration: Math.abs(map.getView().getZoom() - 18) * 200
-    })
-
-    const id = feature.values_.data.id
-    axios.default.get(`http://localhost:3000/marker/meta/${id}`).then((a) => {
-         console.log(a);
+  var feature = map.forEachFeatureAtPixel(evt.pixel,
+    function (feature) {
+      return feature;
     });
+
+  const item = feature.values_.data.item;
+  const packageName = feature.values_.data.packageName;
+
+  map.getView().animate({
+    center: olProj.transform([item.lat, item.lng], 'EPSG:4326', 'EPSG:3857'),
+    zoom: 17,
+    duration: Math.abs(map.getView().getZoom() - 18) * 200
+  })
+
+  axios.default.get(`http://localhost:3000/marker/meta/${packageName}/${item.id}`).then((a) => {
+    console.log(a);
+  });
 });
 
 exports.map = map;
