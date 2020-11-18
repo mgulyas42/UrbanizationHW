@@ -1,19 +1,42 @@
 import 'bootstrap-treeview/dist/bootstrap-treeview.min'
 
+//https://www.npmjs.com/package/bootstrap-treeview
 
-$('#tree').treeview({data: getTree()});
+
+$('#tree').treeview({
+    data: getTree(),
+    multiSelect: true,
+    showCheckbox: true
+});
+
+$('#tree').on('nodeSelected', function(event, data) {
+    console.log('nodeSelected');
+    // Your logic goes here
+});
+
+$('#tree').on('nodeUnselected', function(event, data) {
+    // Your logic goes here
+    console.log('nodeUnselected');
+});
+
+$('#tree').on('nodeChecked', function(event, data) {
+    // Your logic goes here
+    console.log('nodeChecked');
+    data.nodes.forEach(node => $('#tree').treeview('checkNode', [ node.nodeId, { silent: true } ]));
+});
+
+$('#tree').on('nodeUnchecked', function(event, data) {
+    // Your logic goes here
+    console.log('nodeUnchecked');
+    data.nodes.forEach(node => $('#tree').treeview('uncheckNode', [ node.nodeId, { silent: true } ]));
+});
+
 
 function getTree() {
     // Some logic to retrieve, or generate tree structure
     return [
         {
             text: "Parent 1",
-            state: {
-                checked: false,
-                disabled: false,
-                expanded: false,
-                selected: false
-            },
             nodes: [
                 {
                     text: "Child 1",
