@@ -65,3 +65,5 @@ map.on('click', function(evt) {
          console.log(a);
     });
 });
+
+exports.map = map;
