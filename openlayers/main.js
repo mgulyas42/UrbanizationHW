@@ -31,22 +31,22 @@ var map = new Map({
 });
 
 axios.default.get('http://localhost:3000/marker').then((a) => {
-  console.log(a.data);
-  map.addLayer(new Vector({
-    source: addMarker(a.data),
-    maxZoom: 18,
-    minZoom: 2,
-    style: new Style({
-      image: new Icon({
-        anchor: [0.5, 46],
-        anchorXUnits: 'fraction',
-        anchorYUnits: 'pixels',
-        src: 'https://openlayers.org/en/latest/examples/data/icon.png'
-      })
-    })
-  }));
+    console.log(a.data);
+    map.addLayer(new Vector({
+        source: addMarker(a.data),
+        maxZoom: 18,
+        minZoom: 2,
+        style: new Style({
+            image: new Icon({
+                anchor: [0.5, 46],
+                anchorXUnits: 'fraction',
+                anchorYUnits: 'pixels',
+                src: 'https://openlayers.org/en/latest/examples/data/icon.png'
+            })
+        })
+    }));
 
-  addTiles(map, a.data);
+    addTiles(map, a.data);
 })
 
 map.on('click', function (evt) {
@@ -68,3 +68,5 @@ map.on('click', function (evt) {
     console.log(a);
   });
 });
+
+exports.map=map;

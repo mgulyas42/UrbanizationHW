@@ -1,16 +1,28 @@
 import 'bootstrap-treeview/dist/bootstrap-treeview.min'
+var main = require('./main');
+import * as olProj from 'ol/proj';
+var map = require('./main').map;
 
-//https://www.npmjs.com/package/bootstrap-treeview
 
 
 $('#tree').treeview({
     data: getTree(),
-    multiSelect: true,
+    //multiSelect: true,
     showCheckbox: true
 });
 
 $('#tree').on('nodeSelected', function(event, data) {
     console.log('nodeSelected');
+    console.log(data);
+    console.log(map);
+    console.log(Math.abs(map.getView().getZoom() - 18) * 200);
+    console.log(map.getView().getZoom());
+    console.log(olProj.transform([18.584784, 47.190287], 'EPSG:4326', 'EPSG:3857'));
+    map.getView().animate({
+        center: olProj.transform([18.584784, 47.190287], 'EPSG:4326', 'EPSG:3857'),
+        zoom: 17,
+        duration: Math.abs(map.getView().getZoom() - 18) * 200
+    })
     // Your logic goes here
 });
 
@@ -55,7 +67,8 @@ function getTree() {
             ]
         },
         {
-            text: "Parent 2"
+            text: "Velencei Tav",
+            tags: ["18.584784", "47.190287"]
         },
         {
             text: "Parent 3"
