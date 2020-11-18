@@ -1,7 +1,4 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'jquery/dist/jquery.min';
-import 'bootstrap-treeview/dist/bootstrap-treeview.min.css'
-import 'bootstrap-treeview/dist/bootstrap-treeview.min.js'
+import 'bootstrap-treeview/dist/bootstrap-treeview.min'
 
 
 $('#tree').treeview({data: getTree()});
