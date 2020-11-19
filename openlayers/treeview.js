@@ -1,83 +1,99 @@
 import 'bootstrap-treeview/dist/bootstrap-treeview.min'
-var main = require('./main');
 import * as olProj from 'ol/proj';
-var map = require('./main').map;
+import 'regenerator-runtime/runtime'
+import { fromLonLat } from 'ol/proj';
+import { Feature } from 'ol';
+import { Point } from 'ol/geom';
+const map = require('./main').map;
+import * as axios from 'axios';
 
 
+axios.default.get('http://localhost:3000/marker').then((a) => {
+    let data = [];
 
-$('#tree').treeview({
-    data: getTree(),
-    //multiSelect: true,
-    showCheckbox: true
+    for (const [packageName, values] of Object.entries(a.data)) {
+        data.push({
+            text: packageName,
+            nodes: values.map((item) => {
+                return {
+                    tags: {...item, packageName},
+                    text: item.title
+                };
+            })
+        });
+    }
+
+    init(data);
 });
 
-$('#tree').on('nodeSelected', function(event, data) {
-    console.log('nodeSelected');
-    console.log(data);
-    console.log(map);
-    console.log(Math.abs(map.getView().getZoom() - 18) * 200);
-    console.log(map.getView().getZoom());
-    console.log(olProj.transform([18.584784, 47.190287], 'EPSG:4326', 'EPSG:3857'));
-    map.getView().animate({
-        center: olProj.transform([18.584784, 47.190287], 'EPSG:4326', 'EPSG:3857'),
-        zoom: 17,
-        duration: Math.abs(map.getView().getZoom() - 18) * 200
-    })
-    // Your logic goes here
-});
+function init(data) {
 
-$('#tree').on('nodeUnselected', function(event, data) {
-    // Your logic goes here
-    console.log('nodeUnselected');
-});
+    const markerSource = getMarkerSource();
+    const tree = $('#tree');
 
-$('#tree').on('nodeChecked', function(event, data) {
-    // Your logic goes here
-    console.log('nodeChecked');
-    data.nodes.forEach(node => $('#tree').treeview('checkNode', [ node.nodeId, { silent: true } ]));
-});
+    tree.treeview({
+        data: data,
+        //multiSelect: true,
+        showCheckbox: true
+    });
 
-$('#tree').on('nodeUnchecked', function(event, data) {
-    // Your logic goes here
-    console.log('nodeUnchecked');
-    data.nodes.forEach(node => $('#tree').treeview('uncheckNode', [ node.nodeId, { silent: true } ]));
-});
+    tree.on('nodeSelected', function (event, data) {
+        console.log('nodeSelected');
 
+        map.getView().animate({
+            center: olProj.transform([data.tags.lat, data.tags.lng], 'EPSG:4326', 'EPSG:3857'),
+            zoom: 17,
+            duration: Math.abs(map.getView().getZoom() - 18) * 200
+        })
+    });
 
-function getTree() {
-    // Some logic to retrieve, or generate tree structure
-    return [
-        {
-            text: "Parent 1",
-            nodes: [
-                {
-                    text: "Child 1",
-                    nodes: [
-                        {
-                            text: "Grandchild 1"
-                        },
-                        {
-                            text: "Grandchild 2"
-                        }
-                    ]
-                },
-                {
-                    text: "Child 2"
-                }
-            ]
-        },
-        {
-            text: "Velencei Tav",
-            tags: ["18.584784", "47.190287"]
-        },
-        {
-            text: "Parent 3"
-        },
-        {
-            text: "Parent 4"
-        },
-        {
-            text: "Parent 5"
+    tree.on('nodeUnselected', function (event, data) {
+        // Your logic goes here
+        console.log('nodeUnselected');
+    });
+
+    tree.on('nodeChecked', function (event, data) {
+        // Your logic goes here
+        console.log('nodeChecked');
+        if(data.nodes) {
+            data.nodes.forEach(node => $('#tree').treeview('checkNode', [node.nodeId, {silent: false}]));
         }
-    ];
+        else{
+            markerSource.addFeature(new Feature({
+                geometry: new Point(fromLonLat([data.tags.lat, data.tags.lng])),
+                data: data.tags,
+            }))
+        }
+    });
+
+    tree.on('nodeUnchecked', function (event, data) {
+        // Your logic goes here
+        console.log('nodeUnchecked');
+        if(data.nodes) {
+            data.nodes.forEach(node => $('#tree').treeview('uncheckNode', [node.nodeId, {silent: false}]));
+        }
+        else{
+            removeSelectedFeature(markerSource, data.tags.id);
+        }
+    });
+}
+
+function getMarkerSource(){
+    let source;
+
+    map.getLayers().forEach(function (layer) {
+        if (layer.get('name') !== undefined && layer.get('name') === 'markers') {
+            source = layer.getSource();
+        }
+    });
+
+    return source;
+}
+
+async function removeSelectedFeature(markerSource, selectedFeatureID) {
+    const selectedFeature = markerSource
+        .getFeatures()
+        .find(feature => feature.values_.data.id === selectedFeatureID);
+
+    markerSource.removeFeature(selectedFeature);
 }
