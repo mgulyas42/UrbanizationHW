@@ -1,11 +1,13 @@
 import 'bootstrap-treeview/dist/bootstrap-treeview.min'
 import * as olProj from 'ol/proj';
 import 'regenerator-runtime/runtime'
-import { fromLonLat } from 'ol/proj';
-import { Feature } from 'ol';
-import { Point } from 'ol/geom';
+import {fromLonLat} from 'ol/proj';
+import {Feature} from 'ol';
+import {Point} from 'ol/geom';
+
 const map = require('./main').map;
 import * as axios from 'axios';
+import {checkedStyle, uncheckedStyle, markerVector} from './marker'
 
 
 axios.default.get('http://localhost:3000/marker').then((a) => {
@@ -23,12 +25,19 @@ axios.default.get('http://localhost:3000/marker').then((a) => {
         });
     }
 
-    init(data);
+    data.forEach(rootPackage => {
+        const features = rootPackage.nodes.map(data => new Feature({
+            geometry: new Point(fromLonLat([data.tags.lat, data.tags.lng])),
+            data: data.tags,
+            style: uncheckedStyle
+        }));
+        markerVector.getSource().addFeatures(features);
+    })
+
+    createTreeEvents(data);
 });
 
-function init(data) {
-
-    const markerSource = getMarkerSource();
+function createTreeEvents(data) {
     const tree = $('#tree');
 
     tree.treeview({
@@ -47,53 +56,29 @@ function init(data) {
         })
     });
 
-    tree.on('nodeUnselected', function (event, data) {
-        // Your logic goes here
-        console.log('nodeUnselected');
-    });
-
     tree.on('nodeChecked', function (event, data) {
-        // Your logic goes here
         console.log('nodeChecked');
-        if(data.nodes) {
+        if (data.nodes) {
             data.nodes.forEach(node => $('#tree').treeview('checkNode', [node.nodeId, {silent: false}]));
-        }
-        else{
-            markerSource.addFeature(new Feature({
-                geometry: new Point(fromLonLat([data.tags.lat, data.tags.lng])),
-                data: data.tags,
-            }))
+        } else {
+            setFeatureStyle(data.tags.id, checkedStyle);
         }
     });
 
     tree.on('nodeUnchecked', function (event, data) {
-        // Your logic goes here
         console.log('nodeUnchecked');
-        if(data.nodes) {
+        if (data.nodes) {
             data.nodes.forEach(node => $('#tree').treeview('uncheckNode', [node.nodeId, {silent: false}]));
-        }
-        else{
-            removeSelectedFeature(markerSource, data.tags.id);
+        } else {
+            setFeatureStyle(data.tags.id, uncheckedStyle);
         }
     });
 }
 
-function getMarkerSource(){
-    let source;
-
-    map.getLayers().forEach(function (layer) {
-        if (layer.get('name') !== undefined && layer.get('name') === 'markers') {
-            source = layer.getSource();
-        }
-    });
-
-    return source;
-}
-
-async function removeSelectedFeature(markerSource, selectedFeatureID) {
-    const selectedFeature = markerSource
+function setFeatureStyle(featureId, style) {
+    const selectedFeature = markerVector.getSource()
         .getFeatures()
-        .find(feature => feature.values_.data.id === selectedFeatureID);
+        .find(feature => feature.values_.data.id === featureId)
 
-    markerSource.removeFeature(selectedFeature);
+    selectedFeature.setStyle(style)
 }

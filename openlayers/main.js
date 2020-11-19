@@ -2,14 +2,12 @@ import 'ol/ol.css';
 import Map from 'ol/Map';
 import OSM from 'ol/source/OSM';
 import TileLayer from 'ol/layer/Tile';
-import {Vector} from 'ol/layer';
-import {Vector as VectorSource} from 'ol/source';
 import View from 'ol/View';
 import * as olProj from 'ol/proj';
 import {TileDebug} from 'ol/source';
 import {addTiles} from './service/tile'
-import {Icon, Style} from 'ol/style';
 import * as axios from 'axios';
+import {markerVector} from './marker'
 
 const coord = olProj.transform([18.584784, 47.190287], 'EPSG:4326', 'EPSG:3857');
 
@@ -21,22 +19,7 @@ var map = new Map({
         new TileLayer({
             source: new TileDebug(),
         }),
-        new Vector({
-            name: 'markers',
-            source: new VectorSource({
-                features: []
-            }),
-            maxZoom: 18,
-            minZoom: 2,
-            style: new Style({
-                image: new Icon({
-                    anchor: [0.5, 46],
-                    anchorXUnits: 'fraction',
-                    anchorYUnits: 'pixels',
-                    src: 'https://openlayers.org/en/latest/examples/data/icon.png'
-                })
-            })
-        })
+        markerVector
     ],
     target: 'map',
     view: new View({
