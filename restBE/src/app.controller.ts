@@ -1,5 +1,8 @@
-import { Controller, Get, Logger, Req, Res } from '@nestjs/common';
+import { Controller, Get, Logger, Post, Req, Res } from '@nestjs/common';
 import { join, resolve } from 'path';
+import * as AdmZip from "adm-zip";
+import { Readable } from "stream";
+import { Parser } from 'json2csv';
 
 @Controller()
 export class AppController {
@@ -40,6 +43,31 @@ export class AppController {
     const imgPath = resolve(join(__dirname, `./datas/${request.params.path}/${request.params.id}/01.bmp`));
     res.download(imgPath);
     Logger.log(`Image loaded: ${imgPath}`);
+  }
+
+  @Post("/almafa")
+  generateZip(@Req() request, @Res() res) {
+    let zip = new AdmZip();
+
+    request.body.forEach((item,i) => {
+      const itemFolder = resolve(join(__dirname, `./datas/${item.packageName}/${item.id}`));
+      zip.addLocalFolder(itemFolder, `${i+1}`);
+      item.id = i+1;
+      delete item.packageName;
+    })
+
+    const opts = { header: false, delimiter: ';', quote: '' };
+
+    const parser = new Parser(opts);
+    const csv = parser.parse(request.body);
+    zip.addFile('data.csv', Buffer.alloc(csv.length, csv))
+
+    let stream = new Readable();
+    stream.push(zip.toBuffer());
+    stream.push(null);
+
+    res.set({'Content-Type': 'application/zip', 'Content-Length': zip.toBuffer().length})
+    stream.pipe(res);
   }
 
   tile2long(x, z): number {
