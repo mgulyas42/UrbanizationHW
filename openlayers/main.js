@@ -32,23 +32,23 @@ var map = new Map({
 axios.default.get('http://localhost:3000/marker').then((a) => addTiles(map, a.data))
 
 map.on('click', function (evt) {
-    var feature = map.forEachFeatureAtPixel(evt.pixel,
+    const feature = map.forEachFeatureAtPixel(evt.pixel,
         function (feature) {
             return feature;
         });
 
-    const item = feature.values_.data.item;
-    const packageName = feature.values_.data.packageName;
+    const tree = $('#tree');
+    const title = feature.values_.data.title;
 
-    map.getView().animate({
-        center: olProj.transform([item.lat, item.lng], 'EPSG:4326', 'EPSG:3857'),
-        zoom: 17,
-        duration: Math.abs(map.getView().getZoom() - 18) * 200
-    })
+    const searchResult = tree.treeview('search', [ title, {
+        ignoreCase: true,     // case insensitive
+        exactMatch: false,    // like or equals
+        revealResults: true,  // reveal matching nodes
+    }]);
 
-    axios.default.get(`http://localhost:3000/marker/meta/${packageName}/${item.id}`).then((a) => {
-        console.log(a);
-    });
+    tree.treeview('selectNode', [ searchResult[0], { silent: false } ]);
+    $(`[data-nodeid=${searchResult[0].nodeId}]`).get(0).scrollIntoView()
+    tree.treeview('clearSearch');
 });
 
 $("#kaki").click(e => {
