@@ -15,7 +15,7 @@
 .blooming-menu__item:nth-of-type(2) .blooming-menu__item-btn {
     background-image: url(img/accessibility.svg);
 }
-
+/*
 .blooming-menu__item:nth-of-type(3) .blooming-menu__item-btn {
     background-image: url(img/favorite.svg);
 }
@@ -41,7 +41,7 @@
 .blooming-menu__item:nth-of-type(8) .blooming-menu__item-btn {
     background-image: url(img/lock.svg);
     background-size: 35%;
-}
+}*/
 
 .blooming-menu__item-btn:hover {
     box-shadow: 0 8px 17px 0 rgba(0,0,0,.2);

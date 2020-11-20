@@ -1,7 +1,14 @@
 import {map} from "../main";
+import {selectTreeElement, checkTreeElement} from '../treeview'
 
 const bloomingMenu = require('blooming-menu/build/blooming-menu.min');
 import './blooming.css'
+
+
+const menuFunctions = (index) => ({
+    0: checkTreeElement,
+    1: selectTreeElement,
+})[index];
 
 document.addEventListener('touchmove', function (event) {
     'use strict'
@@ -57,7 +64,7 @@ function getPixelCoordinate(feature) {
 function addContextItemListeners(contextMenu, feature) {
     contextMenu.props.elements.items.forEach(function (item, index) {
         item.addEventListener('click', function () {
-            console.log('Item #' + index + 'was clicked');
+            menuFunctions(index)(feature);
             removeContextMenu(contextMenu, 500)
         })
     })

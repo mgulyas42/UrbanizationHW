@@ -82,7 +82,7 @@ function setFeatureStyle(featureId, style) {
     selectedFeature.setStyle(style)
 }
 
-exports.selectTreeElement = (feature) => {
+function findTreeElement(feature){
     const tree = $('#tree');
     const title = feature.values_.data.title;
 
@@ -92,7 +92,18 @@ exports.selectTreeElement = (feature) => {
         revealResults: true,  // reveal matching nodes
     }]);
 
-    tree.treeview('selectNode', [ searchResult[0], { silent: true } ]);
     $(`[data-nodeid=${searchResult[0].nodeId}]`).get(0).scrollIntoView()
     tree.treeview('clearSearch');
+
+    return searchResult[0];
+}
+
+exports.selectTreeElement = (feature) => {
+    $('#tree').treeview('selectNode', [ findTreeElement(feature), { silent: true } ]);
+}
+
+exports.checkTreeElement = (feature) => {
+    const element = findTreeElement(feature);
+    $('#tree').treeview('selectNode', [ element, { silent: true } ]);
+    $('#tree').treeview('checkNode', [ element, { silent: true } ]);
 }
