@@ -105,5 +105,5 @@ exports.selectTreeElement = (feature) => {
 exports.checkTreeElement = (feature) => {
     const element = findTreeElement(feature);
     $('#tree').treeview('selectNode', [ element, { silent: true } ]);
-    $('#tree').treeview('checkNode', [ element, { silent: true } ]);
+    $('#tree').treeview('checkNode', [ element, { silent: false } ]);
 }
