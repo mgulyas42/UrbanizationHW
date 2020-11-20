@@ -8,6 +8,7 @@ import {TileDebug} from 'ol/source';
 import {addTiles} from './service/tile'
 import * as axios from 'axios';
 import {markerVector} from './marker'
+import './contextmenu/contextmenu'
 
 const coord = olProj.transform([18.584784, 47.190287], 'EPSG:4326', 'EPSG:3857');
 
@@ -29,27 +30,9 @@ var map = new Map({
     }),
 });
 
+
+
 axios.default.get('http://localhost:3000/marker').then((a) => addTiles(map, a.data))
-
-map.on('click', function (evt) {
-    const feature = map.forEachFeatureAtPixel(evt.pixel,
-        function (feature) {
-            return feature;
-        });
-
-    const tree = $('#tree');
-    const title = feature.values_.data.title;
-
-    const searchResult = tree.treeview('search', [ title, {
-        ignoreCase: true,     // case insensitive
-        exactMatch: false,    // like or equals
-        revealResults: true,  // reveal matching nodes
-    }]);
-
-    tree.treeview('selectNode', [ searchResult[0], { silent: false } ]);
-    $(`[data-nodeid=${searchResult[0].nodeId}]`).get(0).scrollIntoView()
-    tree.treeview('clearSearch');
-});
 
 $("#kaki").click(e => {
   axios.default.post(

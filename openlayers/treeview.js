@@ -4,10 +4,9 @@ import 'regenerator-runtime/runtime'
 import {fromLonLat} from 'ol/proj';
 import {Feature} from 'ol';
 import {Point} from 'ol/geom';
-
-const map = require('./main').map;
 import * as axios from 'axios';
 import {checkedStyle, uncheckedStyle, markerVector} from './marker'
+import {map} from './main'
 
 
 axios.default.get('http://localhost:3000/marker').then((a) => {
@@ -81,4 +80,19 @@ function setFeatureStyle(featureId, style) {
         .find(feature => feature.values_.data.id === featureId)
 
     selectedFeature.setStyle(style)
+}
+
+exports.selectTreeElement = (feature) => {
+    const tree = $('#tree');
+    const title = feature.values_.data.title;
+
+    const searchResult = tree.treeview('search', [ title, {
+        ignoreCase: true,     // case insensitive
+        exactMatch: false,    // like or equals
+        revealResults: true,  // reveal matching nodes
+    }]);
+
+    tree.treeview('selectNode', [ searchResult[0], { silent: true } ]);
+    $(`[data-nodeid=${searchResult[0].nodeId}]`).get(0).scrollIntoView()
+    tree.treeview('clearSearch');
 }

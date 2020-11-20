@@ -12,9 +12,9 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.21.0",
+    "blooming-menu": "^1.1.1",
     "bootstrap-treeview": "^1.2.0",
     "http-call": "^5.3.0",
-    "hummingbird-treeview": "^2.1.2",
     "jquery": "^3.5.1",
     "ol": "^6.4.3"
   },

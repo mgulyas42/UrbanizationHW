@@ -9,7 +9,7 @@ import { UploadModule } from "./modules/upload/upload.module";
   imports: [
     MarkerModule,
     UploadModule,
-    MongooseModule.forRoot('mongodb://test:test@localhost:27017/testDB?authSource=admin')
+    //MongooseModule.forRoot('mongodb://test:test@localhost:27017/testDB?authSource=admin')
   ],
   controllers: [AppController],
   providers: [],
