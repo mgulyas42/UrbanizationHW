@@ -33,7 +33,7 @@ function init() {
 
         window.setTimeout(() => contextMenu.open(), 1000);
 
-        $(".blooming-menu__container").css({top: pixel[1] + 45, left: pixel[0], position: 'absolute'});
+        $(".blooming-menu__container").css({top: pixel[1], left: pixel[0], position: 'absolute'});
     });
 
     map.on('movestart', () => $('.blooming-menu__container').remove());
