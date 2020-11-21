@@ -13,6 +13,7 @@
   "dependencies": {
     "axios": "^0.21.0",
     "blooming-menu": "^1.1.1",
+    "bootstrap-icons": "^1.1.0",
     "bootstrap-treeview": "^1.2.0",
     "http-call": "^5.3.0",
     "jquery": "^3.5.1",

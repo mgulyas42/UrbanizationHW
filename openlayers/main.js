@@ -10,6 +10,7 @@ import * as axios from 'axios';
 import {markerVector} from './marker'
 import './contextmenu/contextmenu'
 
+
 const coord = olProj.transform([18.584784, 47.190287], 'EPSG:4326', 'EPSG:3857');
 
 var map = new Map({
