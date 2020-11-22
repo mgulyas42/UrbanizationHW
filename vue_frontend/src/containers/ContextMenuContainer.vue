@@ -23,11 +23,11 @@ document.addEventListener('touchmove', function (event) {
 })
 
 function initContextMenus(mapArray){
-  const map = mapArray[0];
+  const map = mapArray;
   map.on('click', (e) => {
     const feature = map.forEachFeatureAtPixel(e.pixel, x => x);
 
-    const menuDiv = document.querySelector('.blooming-menu__container');
+    let menuDiv = document.querySelector('.blooming-menu__container');
     if(menuDiv){
       menuDiv.remove();
     }
@@ -40,6 +40,9 @@ function initContextMenus(mapArray){
     const contextMenu = createContextMenu();
     console.log(pixel);
 
+    menuDiv = document.querySelector('.blooming-menu__container');
+    menuDiv.setAttribute("style", `top:${pixel[1]}px; left:${pixel[0]}px;`);
+
     addContextItemListeners(contextMenu, feature);
 
     window.setTimeout(() => contextMenu.open(), 1000);
@@ -51,6 +54,8 @@ function initContextMenus(mapArray){
       menuDiv.remove();
     }
   });
+
+
 }
 
 
@@ -95,10 +100,13 @@ function removeContextMenu(contextMenu, timeout) {
 export default {
   name: 'TheMarker',
   props: {
-    map: []
+    map: {}
   },
   mounted() {
-    setTimeout(initContextMenus, 1000, this.map);
+    this.$nextTick(() => {
+      console.log(this.map);
+      initContextMenus(this.map)
+    });
   }
 }
 </script>
