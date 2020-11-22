@@ -9,7 +9,7 @@
     <CSidebarBrand class="d-md-down-none" to="/">
     </CSidebarBrand>
 
-    <PackageHandler/>
+    <PackageHandler v-show="!minimize"/>
     <DoughnutChart v-show="!minimize"/>
     <CRenderFunction flat :content-to-render="$options.nav"/>
     <CSidebarMinimizer
@@ -22,18 +22,13 @@
 <script>
 import nav from './_nav'
 import PackageHandler from "./PackageHandler";
-import FileUpload from 'vue-upload-component'
-import $ from 'jquery'
 import DoughnutChart from "@/containers/DoughnutChart";
-import ChartCollapse from "@/containers/ChartCollapse";
 
 export default {
   name: 'TheSidebar',
   nav,
   components: {
-    ChartCollapse,
     DoughnutChart,
-    FileUpload,
     PackageHandler
   },
   computed: {
