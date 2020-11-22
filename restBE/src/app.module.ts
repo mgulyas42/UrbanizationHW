@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 
 import { AppController } from './app.controller';
-import { MarkerModule } from "./modules/marker/marker.module";
-import { UploadModule } from "./modules/upload/upload.module";
+import { FileModule } from "./modules/file/file.module";
+import { DataModule } from "./modules/data/data.module";
 
 @Module({
   imports: [
-    MarkerModule,
-    UploadModule,
+    FileModule,
+    DataModule,
   ],
   controllers: [AppController],
   providers: [],

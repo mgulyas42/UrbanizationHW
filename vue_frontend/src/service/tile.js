@@ -29,7 +29,7 @@ export function addTiles(map, data) {
               anchor: [310, 310],
               anchorXUnits: 'pixels',
               anchorYUnits: 'pixels',
-              src: `http://localhost:3000/almafa/${packageName}/${element.id}`
+              src: `http://localhost:3000/image/${packageName}/${element.id}`
             })
           })
         })

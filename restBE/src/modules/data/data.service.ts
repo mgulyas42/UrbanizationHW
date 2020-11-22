@@ -1,29 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import * as fs from 'fs';
-import { join, resolve } from "path";
-import * as path from "path";
 import { CsvParser } from "nest-csv-parser";
-import { Marker } from "./models/marker";
-import { Metadata } from "./models/metadata";
 import { glob } from "glob";
+import { join, resolve } from "path";
+import * as fs from "fs";
+import { Data } from "./models/data";
+import { Metadata } from "./models/metadata";
+import * as path from "path";
 
 @Injectable()
-export class MarkerService {
-
+export class DataService {
   constructor(
     private readonly csvParser: CsvParser
-  ) {
-  }
+  ) {}
 
   async getDataFromCsvs() {
     let promises = [];
 
     const files = glob.sync(resolve(join(__dirname, `../../datas/**/data.csv`)));
+    console.log(resolve(join(__dirname, `../../datas/**/data.csv`)))
     files.forEach((file) => {
       promises.push(
         this.csvParser.parse(
           fs.createReadStream(file),
-          Marker,
+          Data,
           null,
           null,
           {headers: ["id", "lng", "lat", "title", "valami1", "valami2"], skipLines: 1})

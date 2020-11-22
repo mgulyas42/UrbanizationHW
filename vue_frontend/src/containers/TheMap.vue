@@ -56,12 +56,12 @@ export default {
     //console.log(map);
     //init(map);
 
-    axios.default.get('http://localhost:3000/marker').then((a) => addTiles(map, a.data))
+    axios.default.get('http://localhost:3000/data').then((a) => addTiles(map, a.data))
     // this is where we create the OpenLayers map
 
     /*$("#kaki").click(e => {
       axios.default.post(
-          'http://localhost:3000/almafa',
+          'http://localhost:3000/data',
           $('#tree').treeview('getChecked').map((v) => v.tags).filter((v => !!v)),
           {responseType: 'blob'}
       ).then((res) => {
@@ -70,7 +70,7 @@ export default {
     })*/
 
 
-    axios.default.get('http://localhost:3000/marker').then((a) => {
+    axios.default.get('http://localhost:3000/data').then((a) => {
       let data = [];
 
       for (const [packageName, values] of Object.entries(a.data)) {
@@ -96,8 +96,6 @@ export default {
 
       //createTreeEvents(data);
     });
-
-
 
     function downloadZip(data) {
       const url = window.URL.createObjectURL(new Blob([data]));

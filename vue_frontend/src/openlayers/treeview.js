@@ -8,7 +8,7 @@ import MarkerService from '../containers/MarkerService'
 import map from '../containers/TheMap'
 
 
-axios.default.get('http://localhost:3000/marker').then((a) => {
+axios.default.get('http://localhost:3000/data').then((a) => {
     let data = [];
 
     for (const [packageName, values] of Object.entries(a.data)) {

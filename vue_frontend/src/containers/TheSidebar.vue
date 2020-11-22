@@ -13,7 +13,7 @@
         <div class="input-group-btn">
           <label for="myFile" class="btn btn-default">Import File</label>
           <input id="myFile" type="file" name="filename" class="btn btn-default"  style="visibility:hidden;"/>
-          <button class="btn btn-default" value="Upload" type="submit"><i class="fa fa-upload"></i></button>
+          <button class="btn btn-default" value="Upload" type="submit" style="background: green"><i class="fa fa-upload"></i></button>
         </div>
       </div>
     </form>

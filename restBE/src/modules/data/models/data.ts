@@ -1,4 +1,4 @@
-export class Marker {
+export class Data {
     id: number;
     lat: string;
     lng: string;
