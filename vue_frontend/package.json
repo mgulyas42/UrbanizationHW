@@ -41,6 +41,7 @@
     "ol": "^6.4.3",
     "vue": "~2.6.12",
     "vue-router": "~3.4.3",
+    "vue-upload-component": "^2.8.20",
     "vuex": "~3.5.1"
   },
   "devDependencies": {
