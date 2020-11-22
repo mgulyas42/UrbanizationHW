@@ -7,6 +7,7 @@
                 :options="options"
                 @select="onselect"
                 @input="oninput"
+                @deselect="ondeselect"
     />
   </div>
 </template>
@@ -16,12 +17,41 @@
 import Treeselect from '@riophae/vue-treeselect'
 // import the styles
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
-import store from "@/store";
-import * as axios from "axios";
-import {Feature} from "ol";
-import {Point} from "ol/geom";
-import {fromLonLat} from "ol/proj";
 import MarkerService from "@/containers/MarkerService";
+import map from "@/containers/TheMap";
+import * as olProj from "ol/proj";
+
+
+function getSelectedFeature(idtitle){
+  return MarkerService.markerVector.getSource()
+      .getFeatures()
+      .find(feature => feature.values_.data.id + feature.values_.data.title === idtitle)
+}
+
+function changeStyleOfSelection(event, style){
+
+  if(event.children) {
+    event.children.forEach(child => changeStyleOfSelection(child, style));
+    alert('root clicked');
+  }
+  else {
+    const selectedFeature = getSelectedFeature(event.id);
+    selectedFeature.setStyle(style);
+  }
+}
+
+
+function zoomzoom(){
+  this.on('nodeSelected', function (event, data) {
+    //console.log('nodeSelected');
+
+    map.getView().animate({
+      center: olProj.transform([data.tags.lat, data.tags.lng], 'EPSG:4326', 'EPSG:3857'),
+      zoom: 17,
+      duration: Math.abs(map.getView().getZoom() - 18) * 200
+    })
+  });
+}
 
 
 export default {
@@ -29,35 +59,7 @@ export default {
   // register the component
   components: { Treeselect },
 
-  mounted() {
-    axios.default.get('http://localhost:3000/data').then((a) => {
-      for (const [packageName, values] of Object.entries(a.data)) {
-        store.state.treeData.options.push({
-          id: packageName,
-          label: packageName,
-          children: values.map((item) => {
-            return {
-              id: item.id + item.title,
-              label: item.title,
-              tags: item
-            }
-          })
-        });
-      }
-
-      this.$store.state.treeData.options.forEach(rootPackage => {
-        console.log(rootPackage);
-        const features = rootPackage.children.map(data => new Feature({
-          geometry: new Point(fromLonLat([data.tags.lat, data.tags.lng])),
-          data: data.tags,
-          style: MarkerService.uncheckedStyle
-        }));
-        MarkerService.markerVector.getSource().addFeatures(features);
-      })
-    });
-
-
-  },
+  mounted() {},
   data() {
     console.log(this.$store.state.treeData);
     return this.$store.state.treeData
@@ -65,10 +67,13 @@ export default {
 
   methods: {
     onselect: function (event) {
-      alert('SELECT TRIGGERED')
+      changeStyleOfSelection(event, MarkerService.checkedStyle);
     },
     oninput: function (event) {
-      alert('INPUT CHANGED')
+      //alert('input changed');
+    },
+    ondeselect: event => {
+      changeStyleOfSelection(event, MarkerService.defaultStyle);
     }
   }
 }
@@ -86,5 +91,4 @@ export default {
 .vue-treeselect__menu{
   width: 1000px!important;
 }
-
 </style>

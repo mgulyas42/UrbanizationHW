@@ -18,6 +18,10 @@ import { addTiles } from "@/service/tile";
 import TheContextMenu from "@/containers/ContextMenu";
 import TheTreeView from "@/containers/TreeView";
 import MarkerService from "@/containers/MarkerService";
+import store from "@/store";
+import {Feature} from "ol";
+import {Point} from "ol/geom";
+import {fromLonLat} from "ol/proj";
 
 export default {
   name: 'TheMap',
@@ -48,12 +52,39 @@ export default {
     });
 
     this.olMap = map;
-    //this.olMap.push(map);
-    //console.log(map);
-    //init(map);
 
     axios.default.get('http://localhost:3000/data').then((a) => addTiles(map, a.data))
-    // this is where we create the OpenLayers map
+
+    axios.default.get('http://localhost:3000/data').then((a) => {
+      for (const [packageName, values] of Object.entries(a.data)) {
+        store.state.treeData.options.push({
+          id: packageName,
+          label: packageName,
+          children: values.map((item) => {
+            return {
+              id: item.id + item.title,
+              label: item.title,
+              tags: item
+            }
+          })
+        });
+      }
+
+      this.$store.state.treeData.options.forEach(rootPackage => {
+        console.log(rootPackage);
+        const features = rootPackage.children.map(data => new Feature({
+          geometry: new Point(fromLonLat([data.tags.lat, data.tags.lng])),
+          data: data.tags,
+          style: MarkerService.defaultStyle
+        }));
+        MarkerService.markerVector.getSource().addFeatures(features);
+      })
+    });
+
+
+
+
+
 
     /*$("#kaki").click(e => {
       axios.default.post(
@@ -64,8 +95,6 @@ export default {
         downloadZip(res.data);
       })
     })*/
-
-      //createTreeEvents(data);
 
     function downloadZip(data) {
       const url = window.URL.createObjectURL(new Blob([data]));

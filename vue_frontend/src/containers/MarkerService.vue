@@ -17,17 +17,19 @@ const checkedStyle = new Style({
   })
 });
 
+const defaultStyle = new Style({
+  image: new Icon({
+    anchor: [0.5, 46],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+    src: marker_default
+  })
+});
+
 export default {
   name: 'MarkerService',
   checkedStyle,
-  uncheckedStyle: new Style({
-    image: new Icon({
-      anchor: [0.5, 46],
-      anchorXUnits: 'fraction',
-      anchorYUnits: 'pixels',
-      src: marker_default
-    })
-  }),
+  defaultStyle,
   markerVector: new Vector({
     name: 'markers',
     source: new VectorSource({
@@ -35,7 +37,7 @@ export default {
     }),
     maxZoom: 18,
     minZoom: 2,
-    style: checkedStyle
+    style: defaultStyle
   })
 }
 </script>
