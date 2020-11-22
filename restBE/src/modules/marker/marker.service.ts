@@ -15,7 +15,7 @@ export class MarkerService {
   ) {
   }
 
-  async getDataFromCsv(): Promise<any> {
+  async getDataFromCsvs() {
     let promises = [];
 
     const files = glob.sync(resolve(join(__dirname, `../../datas/**/data.csv`)));

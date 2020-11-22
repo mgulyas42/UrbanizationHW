@@ -7,16 +7,6 @@ import { Parser } from 'json2csv';
 @Controller()
 export class AppController {
 
-  @Get("/debug/:z/:x/:y")
-  debugTiles(@Req() request, @Res() res) {
-    Logger.debug(request.params);
-    Logger.debug(`longitude: ${this.tile2long(request.params.x, request.params.z)}`);
-    Logger.debug(`longitude: ${this.tile2lat(request.params.y, request.params.z)}`);
-
-    res.send('almafa');
-  }
-
-
   /*@Get("/proxy/:z/:x/:y")
   getImage(@Req() request, @Res() res) {//10339,7330
 
@@ -68,14 +58,5 @@ export class AppController {
 
     res.set({'Content-Type': 'application/zip', 'Content-Length': zip.toBuffer().length})
     stream.pipe(res);
-  }
-
-  tile2long(x, z): number {
-    return (x / Math.pow(2, z) * 360 - 180);
-  }
-
-  tile2lat(y, z): number {
-    const n = Math.PI - 2 * Math.PI * y / Math.pow(2, z);
-    return (180 / Math.PI * Math.atan(0.5 * (Math.exp(n) - Math.exp(-n))));
   }
 }

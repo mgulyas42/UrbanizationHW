@@ -10,7 +10,7 @@ export class MarkerController {
 
   @Get('/')
   getAll() {
-    return this.markerService.getDataFromCsv();
+    return this.markerService.getDataFromCsvs();
   }
 
   @Get('/meta/:path/:id')
