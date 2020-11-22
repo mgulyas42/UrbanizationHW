@@ -43,7 +43,7 @@
       </div>
     </form>
     <div class="example-btn" style="margin-top:20px; width:100%;">
-      <button id="kaki" style="margin: auto; width: 100%" type="button" class="btn btn-danger"><i
+      <button id="kaki" @click="download" style="margin: auto; width: 100%" type="button" class="btn btn-danger"><i
           class="fa fa-file-archive-o">Download</i></button>
     </div>
     <CRenderFunction flat :content-to-render="$options.nav"/>
@@ -58,6 +58,17 @@
 import nav from './_nav'
 import FileUpload from 'vue-upload-component'
 import $ from 'jquery'
+import * as axios from "axios";
+import store from "@/store";
+
+function downloadZip(data) {
+  const url = window.URL.createObjectURL(new Blob([data]));
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', 'file.zip');
+  document.body.appendChild(link);
+  link.click();
+}
 
 export default {
   name: 'TheSidebar',
@@ -101,6 +112,26 @@ export default {
     );
   },
   methods: {
+    download: () => {
+      //store.state.treeData.value[0ħ
+
+      const treeDataOptions = store.state.treeData.options;
+
+      const selectedItems = [];
+      store.state.treeData.value.forEach((item) => {
+        let option = store.state.treeData.options.find((o) => o.id === item);
+
+        if (!option) {
+          option = treeDataOptions.find((o) => o.id === item.match(/^(.*)\|[0-9]*$/)[1]).children.find((i) => i.id === item)
+        }
+        console.log(option.children ? option.children.map((c) => c.tags) : 'lol')
+        option.tags ? selectedItems.push(option.tags) : selectedItems.push(...option.children.map((c) => c.tags));
+      });
+      axios.default.post('http://localhost:3000/download', selectedItems, {responseType: 'blob'}).then((res) => downloadZip(res.data))
+
+      //console.log(this.$store.state.treeData)
+
+    },
     /**
      * Has changed
      * @param  Object|undefined   newFile   Read only
