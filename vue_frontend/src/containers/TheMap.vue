@@ -14,7 +14,6 @@ import TileLayer from 'ol/layer/Tile'
 import OSM from 'ol/source/OSM'
 import 'ol/ol.css'
 import * as axios from "axios";
-import { addTiles } from "@/service/tile";
 import TheContextMenu from "@/containers/ContextMenu";
 import TheTreeView from "@/containers/TreeView";
 import MarkerService from "@/containers/MarkerService";
@@ -52,8 +51,6 @@ export default {
     });
 
     this.olMap = map;
-
-    axios.default.get('http://localhost:3000/data').then((a) => addTiles(map, a.data))
 
     axios.default.get('http://localhost:3000/data').then((a) => {
       for (const [packageName, values] of Object.entries(a.data)) {

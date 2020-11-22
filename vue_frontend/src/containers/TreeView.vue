@@ -43,19 +43,6 @@ function changeStyleOfSelection(event, style){
 }
 
 
-function zoomzoom(){
-  this.on('nodeSelected', function (event, data) {
-    //console.log('nodeSelected');
-
-    map.getView().animate({
-      center: olProj.transform([data.tags.lat, data.tags.lng], 'EPSG:4326', 'EPSG:3857'),
-      zoom: 17,
-      duration: Math.abs(map.getView().getZoom() - 18) * 200
-    })
-  });
-}
-
-
 export default {
   name: 'TheTreeView',
   // register the component

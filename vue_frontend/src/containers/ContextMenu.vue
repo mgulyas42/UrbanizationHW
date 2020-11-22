@@ -8,12 +8,7 @@ import store from "@/store";
 
 const bloomingMenu = require('blooming-menu/build/blooming-menu.min');
 import './blooming.css'
-
-
-const menuFunctions = (index) => ({
-  0: id => store.commit('selectTreeElement', id),
-  1: id => store.commit('selectTreeElement', id),
-})[index];
+import {createLayerVector, zoomToTile} from '@/service/tile'
 
 document.addEventListener('touchmove', function (event) {
   'use strict'
@@ -39,9 +34,16 @@ function initContextMenus(mapArray){
     console.log(pixel);
 
     menuDiv = document.querySelector('.blooming-menu__container');
-    menuDiv.setAttribute("style", `top:${pixel[1]}px; left:${pixel[0]}px;`);
 
-    addContextItemListeners(contextMenu, feature);
+    let left = pixel[0];
+
+    if(store.state.sidebarMinimize){
+      left += 60;
+    }
+
+    menuDiv.setAttribute("style", `top:${pixel[1]}px; left:${left}px;`);
+
+    addContextItemListeners(map, contextMenu, feature);
 
     window.setTimeout(() => contextMenu.open(), 1000);
   });
@@ -79,10 +81,23 @@ function getPixelCoordinate(map, feature) {
   return map.getPixelFromCoordinate(coordinate);
 }
 
-function addContextItemListeners(contextMenu, feature) {
+function addContextItemListeners(map, contextMenu, feature) {
   contextMenu.props.elements.items.forEach(function (item, index) {
     item.addEventListener('click', function () {
-      menuFunctions(index)(feature);
+      console.log(index);
+      switch (index){
+        case 1:
+          store.commit('selectTreeElement', feature);
+          break;
+        case 2:
+          store.commit('selectTreeElement', feature);
+          break;
+        case 3:
+          map.addLayer(createLayerVector(feature));
+          zoomToTile(map, feature);
+          break;
+        default:
+      }
       removeContextMenu(contextMenu, 500)
     })
   })
@@ -90,7 +105,11 @@ function addContextItemListeners(contextMenu, feature) {
 
 function removeContextMenu(contextMenu, timeout) {
   contextMenu.close();
-  window.setTimeout(() => contextMenu.remove(), timeout);
+  window.setTimeout(() => {
+    if(contextMenu.props.elements.container.parentNode) {
+      contextMenu.remove();
+    }
+  }, timeout);
 }
 
 
