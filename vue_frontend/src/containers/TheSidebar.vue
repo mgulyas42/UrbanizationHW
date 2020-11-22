@@ -1,7 +1,6 @@
 <template>
 
   <CSidebar
-      fixed
       :minimize="minimize"
       :show="show"
       @update:show="(value) => $store.commit('set', ['sidebarShow', value])"
@@ -46,6 +45,7 @@
       <button id="kaki" style="margin: auto; width: 100%" type="button" class="btn btn-danger"><i
           class="fa fa-file-archive-o">Download</i></button>
     </div>
+    <DoughnutChart v-show="!minimize"/>
     <CRenderFunction flat :content-to-render="$options.nav"/>
     <CSidebarMinimizer
         class="d-md-down-none"
@@ -58,11 +58,15 @@
 import nav from './_nav'
 import FileUpload from 'vue-upload-component'
 import $ from 'jquery'
+import DoughnutChart from "@/containers/DoughnutChart";
+import ChartCollapse from "@/containers/ChartCollapse";
 
 export default {
   name: 'TheSidebar',
   nav,
   components: {
+    ChartCollapse,
+    DoughnutChart,
     FileUpload,
   },
   computed: {
@@ -144,6 +148,7 @@ export default {
 </script>
 
 <style>
+
 .example-drag label.btn {
   margin-bottom: 0;
   margin-right: 1rem;
