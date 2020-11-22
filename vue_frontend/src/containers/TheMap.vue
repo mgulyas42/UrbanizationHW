@@ -2,7 +2,8 @@
   <div ref="map-root"
        style="width: 100%; height: 100%">
     <TheTreeView/>
-    <TheMarker :map="olMap"></TheMarker>
+    <MarkerService/>
+    <TheContextMenu :map="olMap"/>
   </div>
 </template>
 
@@ -14,16 +15,13 @@ import OSM from 'ol/source/OSM'
 import 'ol/ol.css'
 import * as axios from "axios";
 import { addTiles } from "@/service/tile";
-import MarkerService from "./MarkerService";
-import { Feature } from "ol";
-import { Point } from "ol/geom";
-import { fromLonLat } from "ol/proj";
-import TheMarker from "@/containers/ContextMenu";
+import TheContextMenu from "@/containers/ContextMenu";
 import TheTreeView from "@/containers/TreeView";
+import MarkerService from "@/containers/MarkerService";
 
 export default {
   name: 'TheMap',
-  components: {TheMarker, TheTreeView},
+  components: {MarkerService, TheContextMenu, TheTreeView},
   data: () => ({
     // store OL objects on the component instance
     olMap: {}
@@ -67,33 +65,7 @@ export default {
       })
     })*/
 
-
-    axios.default.get('http://localhost:3000/data').then((a) => {
-      let data = [];
-
-      for (const [packageName, values] of Object.entries(a.data)) {
-        data.push({
-          text: packageName,
-          nodes: values.map((item) => {
-            return {
-              tags: {...item, packageName},
-              text: item.title
-            };
-          })
-        });
-      }
-
-      data.forEach(rootPackage => {
-        const features = rootPackage.nodes.map(data => new Feature({
-          geometry: new Point(fromLonLat([data.tags.lat, data.tags.lng])),
-          data: data.tags,
-          style: MarkerService.uncheckedStyle
-        }));
-        MarkerService.markerVector.getSource().addFeatures(features);
-      })
-
       //createTreeEvents(data);
-    });
 
     function downloadZip(data) {
       const url = window.URL.createObjectURL(new Blob([data]));

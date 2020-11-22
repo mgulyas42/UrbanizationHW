@@ -1,3 +1,6 @@
+<template>
+  <div></div>
+</template>
 <script>
 import marker_default from "./../assets/icons/marker.png";
 import marker_selected from "./../assets/icons/marker_selected.png";
@@ -15,6 +18,7 @@ const checkedStyle = new Style({
 });
 
 export default {
+  name: 'MarkerService',
   checkedStyle,
   uncheckedStyle: new Style({
     image: new Icon({

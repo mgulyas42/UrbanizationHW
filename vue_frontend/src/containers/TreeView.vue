@@ -1,8 +1,13 @@
 <!-- Vue SFC -->
 <template>
   <div id="app">
-    <button v-on:click="$store.commit('updateValue')">UPDATE VALUEEEEEEE</button>
-    <treeselect v-model="value" :multiple="true" :alwaysOpen="true" :options="options" />
+    <treeselect v-model="value"
+                :multiple="true"
+                :alwaysOpen="true"
+                :options="options"
+                @select="onselect"
+                @input="oninput"
+    />
   </div>
 </template>
 
@@ -11,6 +16,12 @@
 import Treeselect from '@riophae/vue-treeselect'
 // import the styles
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
+import store from "@/store";
+import * as axios from "axios";
+import {Feature} from "ol";
+import {Point} from "ol/geom";
+import {fromLonLat} from "ol/proj";
+import MarkerService from "@/containers/MarkerService";
 
 
 export default {
@@ -19,12 +30,46 @@ export default {
   components: { Treeselect },
 
   mounted() {
-    console.log(this._uid);
-    this.$emit('select', this._uid);
+    axios.default.get('http://localhost:3000/data').then((a) => {
+      for (const [packageName, values] of Object.entries(a.data)) {
+        store.state.treeData.options.push({
+          id: packageName,
+          label: packageName,
+          children: values.map((item) => {
+            return {
+              id: item.id + item.title,
+              label: item.title,
+              tags: item
+            }
+          })
+        });
+      }
+
+      this.$store.state.treeData.options.forEach(rootPackage => {
+        console.log(rootPackage);
+        const features = rootPackage.children.map(data => new Feature({
+          geometry: new Point(fromLonLat([data.tags.lat, data.tags.lng])),
+          data: data.tags,
+          style: MarkerService.uncheckedStyle
+        }));
+        MarkerService.markerVector.getSource().addFeatures(features);
+      })
+    });
+
+
   },
   data() {
     console.log(this.$store.state.treeData);
     return this.$store.state.treeData
+  },
+
+  methods: {
+    onselect: function (event) {
+      alert('SELECT TRIGGERED')
+    },
+    oninput: function (event) {
+      alert('INPUT CHANGED')
+    }
   }
 }
 </script>

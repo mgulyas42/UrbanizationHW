@@ -4,7 +4,6 @@ import {fromLonLat} from 'ol/proj';
 import {Feature} from 'ol';
 import {Point} from 'ol/geom';
 import * as axios from 'axios';
-import MarkerService from '../containers/MarkerService'
 import map from '../containers/TheMap'
 
 

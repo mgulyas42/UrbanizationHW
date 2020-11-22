@@ -4,15 +4,15 @@
 
 <script>
 
-import TreeView from '../openlayers/treeview'
+import store from "@/store";
 
 const bloomingMenu = require('blooming-menu/build/blooming-menu.min');
 import './blooming.css'
 
 
 const menuFunctions = (index) => ({
-  0: TreeView.checkTreeElement,
-  1: TreeView.selectTreeElement,
+  0: id => store.commit('selectTreeElement', id),
+  1: id => store.commit('selectTreeElement', id),
 })[index];
 
 document.addEventListener('touchmove', function (event) {
@@ -82,7 +82,6 @@ function getPixelCoordinate(map, feature) {
 function addContextItemListeners(contextMenu, feature) {
   contextMenu.props.elements.items.forEach(function (item, index) {
     item.addEventListener('click', function () {
-      console.log(menuFunctions);
       menuFunctions(index)(feature);
       removeContextMenu(contextMenu, 500)
     })
@@ -96,7 +95,7 @@ function removeContextMenu(contextMenu, timeout) {
 
 
 export default {
-  name: 'TheMarker',
+  name: 'TheContextMenu',
   props: {
     map: {}
   },
