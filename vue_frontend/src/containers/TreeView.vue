@@ -13,22 +13,9 @@
 </template>
 
 <script>
-// import the component
 import Treeselect from '@riophae/vue-treeselect'
-// import the styles
 import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import MarkerService from "@/containers/MarkerService";
-import map from "@/containers/TheMap";
-import * as olProj from "ol/proj";
-
-
-function getSelectedFeature(idtitle){
-  return MarkerService.markerVector.getSource()
-      .getFeatures()
-      .find(feature => {
-        return feature.values_.data.packageName + '|' + feature.values_.data.id === idtitle;
-      })
-}
 
 function changeStyleOfSelection(event, style){
 
@@ -37,7 +24,7 @@ function changeStyleOfSelection(event, style){
     alert('root clicked');
   }
   else {
-    const selectedFeature = getSelectedFeature(event.id);
+    const selectedFeature = MarkerService.getSelectedFeature(event.id);
     selectedFeature.setStyle(style);
   }
 }
@@ -59,7 +46,8 @@ export default {
       changeStyleOfSelection(event, MarkerService.checkedStyle);
     },
     oninput: function (event) {
-      //alert('input changed');
+      console.log(event);
+      alert('input changed');
     },
     ondeselect: event => {
       changeStyleOfSelection(event, MarkerService.defaultStyle);

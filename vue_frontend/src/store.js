@@ -1,6 +1,8 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-Vue.use(Vuex)
+import Vue from 'vue';
+import Vuex from 'vuex';
+import MarkerService from './containers/MarkerService'
+
+Vue.use(Vuex);
 
 const state = {
   sidebarShow: 'responsive',
@@ -27,7 +29,10 @@ const mutations = {
   },
   selectTreeElement(state, feature) {
     const item = feature.values_.data;
-    state.treeData.value.push(item.packageName + '|' + item.id)
+    const id = item.packageName + '|' + item.id;
+    MarkerService.getSelectedFeature(id).setStyle(MarkerService.checkedStyle);
+
+    state.treeData.value.push(id);
   }
 }
 

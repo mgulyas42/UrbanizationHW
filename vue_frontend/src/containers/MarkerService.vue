@@ -26,18 +26,25 @@ const defaultStyle = new Style({
   })
 });
 
+const markerVector = new Vector({
+  name: 'markers',
+  source: new VectorSource({
+    features: []
+  }),
+  maxZoom: 18,
+  minZoom: 2,
+  style: defaultStyle
+})
+
 export default {
   name: 'MarkerService',
   checkedStyle,
   defaultStyle,
-  markerVector: new Vector({
-    name: 'markers',
-    source: new VectorSource({
-      features: []
-    }),
-    maxZoom: 18,
-    minZoom: 2,
-    style: defaultStyle
-  })
+  markerVector,
+  getSelectedFeature: idtitle => {
+    return markerVector.getSource()
+        .getFeatures()
+        .find(feature => feature.values_.data.packageName + '|' + feature.values_.data.id === idtitle)
+  }
 }
 </script>

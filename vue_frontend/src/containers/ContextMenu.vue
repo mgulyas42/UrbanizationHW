@@ -86,13 +86,13 @@ function addContextItemListeners(map, contextMenu, feature) {
     item.addEventListener('click', function () {
       console.log(index);
       switch (index){
+        case 0:
+          store.commit('selectTreeElement', feature);
+          break;
         case 1:
           store.commit('selectTreeElement', feature);
           break;
         case 2:
-          store.commit('selectTreeElement', feature);
-          break;
-        case 3:
           map.addLayer(createLayerVector(feature));
           zoomToTile(map, feature);
           break;
