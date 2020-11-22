@@ -1,8 +1,8 @@
 <template>
   <div ref="map-root"
        style="width: 100%; height: 100%">
+    <TheTreeView/>
     <TheMarker :map="olMap"></TheMarker>
-    <!--<button class="openbtn" onclick="openNav()">&#9776;</button>-->
   </div>
 </template>
 
@@ -18,11 +18,12 @@ import MarkerService from "./MarkerService";
 import { Feature } from "ol";
 import { Point } from "ol/geom";
 import { fromLonLat } from "ol/proj";
-import TheMarker from "@/containers/ContextMenuContainer";
+import TheMarker from "@/containers/ContextMenu";
+import TheTreeView from "@/containers/TreeView";
 
 export default {
   name: 'TheMap',
-  components: {TheMarker},
+  components: {TheMarker, TheTreeView},
   data: () => ({
     // store OL objects on the component instance
     olMap: {}

@@ -13,14 +13,12 @@
 
 <script>
 import TheSidebar from './TheSidebar'
-import TheHeader from './TheHeader'
 import TheMap from './TheMap'
 
 export default {
   name: 'TheContainer',
   components: {
     TheSidebar,
-    TheHeader,
     TheMap
   }
 }

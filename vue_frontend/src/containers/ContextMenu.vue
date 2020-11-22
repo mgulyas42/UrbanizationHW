@@ -1,7 +1,5 @@
 <template>
-  <div>
-    kaki
-  </div>
+  <div></div>
 </template>
 
 <script>
