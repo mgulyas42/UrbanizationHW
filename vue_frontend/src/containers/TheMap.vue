@@ -54,7 +54,7 @@ export default {
     //console.log(map);
     //init(map);
 
-    axios.default.get('http://localhost:3000/data').then((a) => addTiles(map, a.data))
+    //axios.default.get('http://localhost:3000/data').then((a) => addTiles(map, a.data))
     // this is where we create the OpenLayers map
 
     /*$("#kaki").click(e => {
@@ -69,6 +69,7 @@ export default {
 
 
     axios.default.get('http://localhost:3000/data').then((a) => {
+      addTiles(map, a.data)
       let data = [];
 
       for (const [packageName, values] of Object.entries(a.data)) {

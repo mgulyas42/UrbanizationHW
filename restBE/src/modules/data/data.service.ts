@@ -17,7 +17,6 @@ export class DataService {
     let promises = [];
 
     const files = glob.sync(resolve(join(__dirname, `../../datas/**/data.csv`)));
-    console.log(resolve(join(__dirname, `../../datas/**/data.csv`)))
     files.forEach((file) => {
       promises.push(
         this.csvParser.parse(
