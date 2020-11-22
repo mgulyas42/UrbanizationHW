@@ -2,7 +2,7 @@ import { Injectable, UploadedFile } from '@nestjs/common';
 import * as extract from "extract-zip";
 import { join, resolve } from "path";
 import * as fs from "fs";
-import AdmZip from "adm-zip";
+import * as AdmZip from "adm-zip";
 import { Parser } from "json2csv";
 
 @Injectable()
@@ -32,7 +32,7 @@ export class FileService {
     let zip = new AdmZip();
 
     items.forEach((item,i) => {
-      const itemFolder = resolve(join(__dirname, `./datas/${item.packageName}/${item.id}`));
+      const itemFolder = resolve(join(__dirname, `../../datas/${item.packageName}/${item.id}`));
       zip.addLocalFolder(itemFolder, `${i+1}`);
       item.id = i+1;
       delete item.packageName;

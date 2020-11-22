@@ -27,7 +27,7 @@ const mutations = {
   },
   selectTreeElement(state, feature) {
     const item = feature.values_.data;
-    state.treeData.value.push(item.id + item.title)
+    state.treeData.value.push(item.tags.packageName + '|' + item.id)
   }
 }
 

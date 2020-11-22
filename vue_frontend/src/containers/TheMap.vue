@@ -62,9 +62,9 @@ export default {
           label: packageName,
           children: values.map((item) => {
             return {
-              id: item.id + item.title,
+              id: packageName + '|' + item.id,
               label: item.title,
-              tags: item
+              tags: {...item, packageName}
             }
           })
         });

@@ -25,7 +25,9 @@ import * as olProj from "ol/proj";
 function getSelectedFeature(idtitle){
   return MarkerService.markerVector.getSource()
       .getFeatures()
-      .find(feature => feature.values_.data.id + feature.values_.data.title === idtitle)
+      .find(feature => {
+        return feature.values_.data.packageName + '|' + feature.values_.data.id === idtitle;
+      })
 }
 
 function changeStyleOfSelection(event, style){
