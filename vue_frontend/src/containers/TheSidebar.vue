@@ -10,11 +10,12 @@
     <CSidebarBrand class="d-md-down-none" to="/">
     </CSidebarBrand>
 
-    <PackageHandler v-show="!minimize"/>
+    <PackageHandlerCollapse v-show="!minimize"/>
     <DoughnutChart v-show="!minimize"/>
-    <CRenderFunction flat :content-to-render="$options.nav"/>
+    <!--<CRenderFunction flat :content-to-render="$options.nav"/>-->
     <CSidebarMinimizer
         class="d-md-down-none"
+        style="bottom: 0; position: absolute"
         @click.native="$store.commit('set', ['sidebarMinimize', !minimize])"
     />
   </CSidebar>
@@ -22,15 +23,15 @@
 
 <script>
 import nav from './_nav'
-import PackageHandler from "./PackageHandler";
 import DoughnutChart from "@/containers/DoughnutChart";
+import PackageHandlerCollapse from "@/containers/PackageHandlerCollapse";
 
 export default {
   name: 'TheSidebar',
   nav,
   components: {
-    DoughnutChart,
-    PackageHandler
+    PackageHandlerCollapse,
+    DoughnutChart
   },
   computed: {
     show() {

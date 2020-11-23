@@ -2,7 +2,7 @@
   <CChartDoughnut
       :datasets="defaultDatasets"
       :options="options"
-      :labels="['VueJs', 'EmberJs', 'ReactJs', 'AngularJs']"
+      :labels="['package_A', 'package_B', 'package_C', 'package_D']"
   />
 </template>
 

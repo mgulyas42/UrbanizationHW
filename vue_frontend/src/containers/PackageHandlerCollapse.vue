@@ -5,21 +5,21 @@
         color="primary"
         class="mb-2"
     >
-      Toggle Collapse
+      Package Handler
     </CButton>
     <CCollapse :show="collapse">
       <CCard body-wrapper>
-        <DoughnutChart/>
+        <PackageHandler/>
       </CCard>
     </CCollapse>
   </div>
 </template>
 
 <script>
-import DoughnutChart from "@/containers/DoughnutChart";
+import PackageHandler from "@/containers/PackageHandler";
 export default {
-  name: "ChartCollapse",
-  components: {DoughnutChart},
+  name: "PackageHandlerCollapse",
+  components: {PackageHandler},
   data () {
     return {
       collapse: false,
@@ -28,3 +28,10 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.card {
+  border: none;
+  background: none;
+}
+</style>
