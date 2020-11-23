@@ -5,35 +5,18 @@
 <script>
 
 import store from "@/store";
-
-const bloomingMenu = require('blooming-menu/build/blooming-menu.min');
 import './blooming.css'
 import {createLayerVector, zoomToTile} from '@/service/tile'
+
+const bloomingMenu = require('blooming-menu/build/blooming-menu.min');
 
 document.addEventListener('touchmove', function (event) {
   'use strict'
   event.preventDefault()
 })
 
-function initContextMenus(mapArray){
-  const map = mapArray;
-  map.on('click', (e) => {
-    const feature = map.forEachFeatureAtPixel(e.pixel, x => x);
-
-    let menuDiv = document.querySelector('.blooming-menu__container');
-    if(menuDiv){
-      menuDiv.remove();
-    }
-
-    if (!feature) {
-      return;
-    }
-
-    const pixel = getPixelCoordinate(map, feature);
-    const contextMenu = createContextMenu();
-    console.log(pixel);
-
-    menuDiv = document.querySelector('.blooming-menu__container');
+function setContextMenuPosition(contextMenu, pixel){
+    let menuDiv = contextMenu.div;
 
     let left = pixel[0];
 
@@ -42,49 +25,13 @@ function initContextMenus(mapArray){
     }
 
     menuDiv.setAttribute("style", `top:${pixel[1]}px; left:${left}px;`);
-
-    addContextItemListeners(map, contextMenu, feature);
-
-    window.setTimeout(() => contextMenu.open(), 1000);
-  });
-
-  map.on('movestart', () => {
-    const menuDiv = document.querySelector('.blooming-menu__container');
-    if(menuDiv){
-      menuDiv.remove();
-    }
-  });
-
-
 }
 
-
-function createContextMenu() {
-  const contextMenu = bloomingMenu({
-    startAngle: 0,
-    endAngle: 315,
-    radius: 100,
-    itemsNum: 8
-  });
-
-  contextMenu.render();
-  contextMenu.props.elements.mainContainer.addEventListener('click', () => {
-    removeContextMenu(contextMenu, 800);
-  });
-
-  return contextMenu;
-}
-
-function getPixelCoordinate(map, feature) {
-  const geometry = feature.getGeometry();
-  const coordinate = geometry.getCoordinates();
-  return map.getPixelFromCoordinate(coordinate);
-}
-
-function addContextItemListeners(map, contextMenu, feature) {
+function addContextItemListeners(map, contextMenu) {
   contextMenu.props.elements.items.forEach(function (item, index) {
     item.addEventListener('click', function () {
-      console.log(index);
+      const feature = contextMenu.feature;
+
       switch (index){
         case 0:
           store.commit('selectTreeElement', feature);
@@ -98,16 +45,17 @@ function addContextItemListeners(map, contextMenu, feature) {
           break;
         default:
       }
-      removeContextMenu(contextMenu, 500)
+      hideContextMenu(contextMenu, 500)
     })
   })
 }
 
-function removeContextMenu(contextMenu, timeout) {
+function hideContextMenu(contextMenu, timeout) {
+  console.log('hideContextMenu called');
   contextMenu.close();
   window.setTimeout(() => {
     if(contextMenu.props.elements.container.parentNode) {
-      contextMenu.remove();
+      contextMenu.div.setAttribute("style", `visibility: hidden;`);
     }
   }, timeout);
 }
@@ -116,13 +64,58 @@ function removeContextMenu(contextMenu, timeout) {
 export default {
   name: 'TheContextMenu',
   props: {
-    map: {}
+    map: {},
   },
+  data: () => ({
+    // store OL objects on the component instance
+    contextMenu: bloomingMenu({
+      startAngle: 0,
+      endAngle: 315,
+      radius: 100,
+      itemsNum: 8
+    })
+  }),
   mounted() {
     this.$nextTick(() => {
-      console.log(this.map);
-      initContextMenus(this.map)
+      console.log('Context menu mounted');
+      this.map.on('movestart', () => {
+        hideContextMenu(this.contextMenu, 800);
+      });
+
+      this.map.on('click', (e) => {
+        this.contextMenu['feature'] = this.map.forEachFeatureAtPixel(e.pixel, x => x);
+
+        if(!this.contextMenu.feature) {
+          hideContextMenu(this.contextMenu, 800);
+          return;
+        }
+
+        if(this.contextMenu.state.isOpen){
+          hideContextMenu(this.contextMenu,  800);
+        }
+        else {
+          setContextMenuPosition(this.contextMenu, e.pixel);
+          window.setTimeout(() => this.contextMenu.open(), 1000);
+        }
+      });
+
+      addContextItemListeners(this.map, this.contextMenu);
     });
+  },
+  beforeDestroy() {
+    console.log('Context menu destroyed');
+    let menuDiv = document.querySelector('.blooming-menu__container');
+    if(menuDiv){
+      menuDiv.remove();
+    }
+  },
+  created() {
+    this.contextMenu.render();
+    this.contextMenu.props.elements.mainContainer.addEventListener('click', () => {
+      hideContextMenu(this.contextMenu, 800);
+    });
+    this.contextMenu['div'] = document.querySelector('.blooming-menu__container');
+    hideContextMenu(this.contextMenu, 0);
   }
 }
 </script>

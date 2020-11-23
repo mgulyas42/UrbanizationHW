@@ -27,6 +27,10 @@ const mutations = {
   set (state, [variable, value]) {
     state[variable] = value
   },
+  clearTree(state){
+    console.log('map destroyed, clear tree from store');
+    state.treeData.options.clear();
+  },
   selectTreeElement(state, feature) {
     const item = feature.values_.data;
     const id = item.packageName + '|' + item.id;

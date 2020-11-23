@@ -77,30 +77,9 @@ export default {
         MarkerService.markerVector.getSource().addFeatures(features);
       })
     });
-
-
-
-
-
-
-    /*$("#kaki").click(e => {
-      axios.default.post(
-          'http://localhost:3000/data',
-          $('#tree').treeview('getChecked').map((v) => v.tags).filter((v => !!v)),
-          {responseType: 'blob'}
-      ).then((res) => {
-        downloadZip(res.data);
-      })
-    })*/
-
-    function downloadZip(data) {
-      const url = window.URL.createObjectURL(new Blob([data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'file.zip');
-      document.body.appendChild(link);
-      link.click();
-    }
+  },
+  destroyed() {
+    this.$store.commit("clearTree");
   }
 }
 </script>
