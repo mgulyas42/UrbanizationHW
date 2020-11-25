@@ -5,6 +5,7 @@ import { CsvParser } from "nest-csv-parser";
 
 @Module({
   controllers: [DataController],
-  providers: [DataService, CsvParser]
+  providers: [DataService, CsvParser],
+  exports: [DataService]
 })
 export class DataModule {}

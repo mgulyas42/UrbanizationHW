@@ -1,15 +1,28 @@
-import { Controller, Get, Logger, Post, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Logger,
+  Post,
+  Req,
+  Res,
+  UploadedFile,
+  UseInterceptors
+} from '@nestjs/common';
 import { FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
 import { FileService } from "./file.service";
 import { join, resolve } from "path";
 import { Readable } from "stream";
+import { DataService } from "../data/data.service";
 
 @Controller('')
 export class FileController {
 
   constructor(
-    private fileService: FileService
+    private fileService: FileService,
+    private dataService: DataService
   ) {}
 
   @Post('upload')
@@ -23,8 +36,17 @@ export class FileController {
       })
     }) as any
   )
-  async uploadFile(@UploadedFile() file) {
-    await this.fileService.uploadFile(file);
+  async uploadFile(@UploadedFile() file, @Res() res) {
+    try {
+      const datas = await this.dataService.getDataFromCsvs();
+      await this.fileService.uploadFile(file, datas, res);
+      res.send('OK');
+    } catch (e) {
+      throw new HttpException({
+        status: HttpStatus.FORBIDDEN,
+        error: 'This is a custom message',
+      }, HttpStatus.FORBIDDEN);
+    }
   }
 
   @Post("download")

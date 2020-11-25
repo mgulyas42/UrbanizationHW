@@ -13,7 +13,7 @@ export class DataService {
     private readonly csvParser: CsvParser
   ) {}
 
-  async getDataFromCsvs() {
+  async getDataFromCsvs(): Promise<{[key: string]: Data[]}> {
     let promises = [];
 
     const files = glob.sync(resolve(join(__dirname, `../../datas/**/data.csv`)));
@@ -30,7 +30,7 @@ export class DataService {
 
     return Promise.all(promises)
       .then((all) => {
-        let response = {};
+        let response: {[key: string]: Data[]} = {};
         all.forEach((e, i) => {
           response[path.basename(path.dirname(files[i]))] = e.list;
         })
@@ -38,7 +38,7 @@ export class DataService {
       })
       .catch((e) => {
         console.error(e);
-        return [];
+        return {};
       })
   }
 
