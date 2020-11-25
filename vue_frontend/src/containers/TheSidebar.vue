@@ -8,6 +8,10 @@
       @update:show="(value) => $store.commit('set', ['sidebarShow', value])"
   >
     <CSidebarBrand class="d-md-down-none" to="/">
+      <v-img contain
+            :height="imgSize"
+            :width="imgSize"
+             src="http://oktatas.mik.uni-pannon.hu/pluginfile.php/1/theme_enlightlite/logo/1604907398/cimer_szines_99_transparent.png"></v-img>
     </CSidebarBrand>
 
     <PackageHandlerCollapse v-show="!minimize"/>
@@ -39,7 +43,11 @@ export default {
     },
     minimize() {
       return this.$store.state.sidebarMinimize
+    },
+    imgSize() {
+      return this.minimize ? '55px' : '150px' ;
     }
+
   }
 }
 </script>

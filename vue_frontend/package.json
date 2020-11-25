@@ -1,32 +1,17 @@
 {
-  "name": "@coreui/coreui-free-vue-admin-template",
-  "version": "3.1.1",
-  "description": "Open Source Bootstrap Admin Template",
+  "name": "UrbanizationHW",
+  "version": "1.0.0-beta",
+  "description": "THE Project",
   "author": {
-    "name": "CoreUI",
-    "url": "https://coreui.io",
-    "github": "https://github.com/coreui",
-    "twitter": "https://twitter.com/core_ui"
+    "name": "mgulyas",
+    "github": "https://github.com/mgulyas42/UrbanizationHW",
   },
-  "contributors": [
-    {
-      "name": "CoreUI Team",
-      "url": "https://github.com/orgs/coreui/people"
-    }
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:coreui/coreui-free-vue-admin-template.git"
-  },
-  "homepage": "http://coreui.io",
-  "copyright": "Copyright 2020 creativeLabs Łukasz Holeczek",
-  "license": "MIT",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "release": "npm-run-all clearCache lint build test:unit test:e2e",
-    "auto-changelog": "auto-changelog  --hide-credit --commit-limit false --package --backfill-limit 0 --starting-version 3.0.0-beta.0"
+    "auto-changelog": "auto-changelog  --hide-credit --commit-limit false --package --backfill-limit 0 --starting-version 3.0.0-beta.0",
+    "release": "npm-run-all clearCache lint build test:unit test:e2e"
   },
   "dependencies": {
     "@coreui/coreui": "^3.2.2",
@@ -42,6 +27,7 @@
     "vue": "~2.6.12",
     "vue-router": "~3.4.3",
     "vue-upload-component": "^2.8.20",
+    "vuetify": "^2.2.11",
     "vuex": "~3.5.1"
   },
   "devDependencies": {
@@ -63,8 +49,11 @@
     "eslint-plugin-vue": "~6.2.2",
     "node-sass": "~4.14.1",
     "npm-run-all": "~4.1.5",
+    "sass": "^1.19.0",
     "sass-loader": "~10.0.2",
-    "vue-template-compiler": "~2.6.12"
+    "vue-cli-plugin-vuetify": "~2.0.7",
+    "vue-template-compiler": "~2.6.12",
+    "vuetify-loader": "^1.3.0"
   },
   "browserslist": [
     "> 1%",

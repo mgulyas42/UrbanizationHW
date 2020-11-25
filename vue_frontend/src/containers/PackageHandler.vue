@@ -40,7 +40,6 @@
 
 <script>
 import nav from './_nav'
-import FileUpload from 'vue-upload-component'
 import $ from 'jquery'
 import * as axios from "axios";
 import store from "@/store";
@@ -57,9 +56,6 @@ function downloadZip(data) {
 export default {
   name: 'PackageHandler',
   nav,
-  components: {
-    FileUpload,
-  },
   computed: {
     show() {
       return this.$store.state.sidebarShow
@@ -87,7 +83,7 @@ export default {
             data: new FormData(this),
             processData: false,
             contentType: false,
-            success: function (result) {
+            success: function () {
               location.reload();
             }
           });

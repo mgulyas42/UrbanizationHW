@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div style="margin: 20px 0px">
     <CButton
         @click="collapse = !collapse"
         color="primary"
-        class="mb-2"
-    >
+        style="margin: auto; width: 100%;"
+        class="mb-2">
       Package Handler
     </CButton>
     <CCollapse :show="collapse">
