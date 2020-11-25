@@ -5,9 +5,11 @@ import router from './router'
 import CoreuiVue from '@coreui/vue'
 import { iconsSet as icons } from './assets/icons/icons.js'
 import store from './store'
+import Toasted from 'vue-toasted';
 
 Vue.config.performance = true
 Vue.use(CoreuiVue)
+Vue.use(Toasted)
 Vue.prototype.$log = console.log.bind(console)
 
 const VueUploadComponent = require('vue-upload-component')

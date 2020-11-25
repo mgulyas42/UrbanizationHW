@@ -4,7 +4,7 @@
   "description": "THE Project",
   "author": {
     "name": "mgulyas",
-    "github": "https://github.com/mgulyas42/UrbanizationHW",
+    "github": "https://github.com/mgulyas42/UrbanizationHW"
   },
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -26,6 +26,7 @@
     "ol": "^6.4.3",
     "vue": "~2.6.12",
     "vue-router": "~3.4.3",
+    "vue-toasted": "^1.1.28",
     "vue-upload-component": "^2.8.20",
     "vuetify": "^2.2.11",
     "vuex": "~3.5.1"

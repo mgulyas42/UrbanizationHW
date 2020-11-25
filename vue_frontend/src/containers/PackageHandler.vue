@@ -32,7 +32,7 @@
       </div>
     </form>
     <div class="example-btn" style="margin-top:20px; width:100%;">
-      <button id="kaki" @click="download" style="margin: auto; width: 100%" type="button" class="btn btn-danger"><i
+      <button @click="download" style="margin: auto; width: 100%" type="button" class="btn btn-danger"><i
           class="fa fa-file-archive-o">Download</i></button>
     </div>
   </div>
@@ -43,6 +43,7 @@ import nav from './_nav'
 import $ from 'jquery'
 import * as axios from "axios";
 import store from "@/store";
+import Vue from "vue";
 
 function downloadZip(data) {
   const url = window.URL.createObjectURL(new Blob([data]));
@@ -85,6 +86,10 @@ export default {
             contentType: false,
             success: function () {
               location.reload();
+            },
+            error: function(err) {
+              console.error(err);
+              Vue.toasted.error(err.responseJSON.error).goAway(5000);
             }
           });
           e.preventDefault();
