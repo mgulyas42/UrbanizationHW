@@ -20,7 +20,12 @@ export default {
       }
     }
   }),
-
+  mounted() {
+    console.log('char created');
+  },
+  created() {
+    console.log('char created');
+  },
   computed: {
     defaultDatasets () {
       return [
