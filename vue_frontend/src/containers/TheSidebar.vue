@@ -8,7 +8,7 @@
       @update:show="(value) => $store.commit('set', ['sidebarShow', value])"
   >
     <CSidebarBrand class="d-md-down-none" to="/">
-      <v-img contain src="http://oktatas.mik.uni-pannon.hu/pluginfile.php/1/theme_enlightlite/logo/1604907398/cimer_szines_99_transparent.png" max-height="150pxt"></v-img>
+      <v-img contain src="http://oktatas.mik.uni-pannon.hu/pluginfile.php/1/theme_enlightlite/logo/1604907398/cimer_szines_99_transparent.png" max-height="150px"></v-img>
     </CSidebarBrand>
 
     <PackageHandlerCollapse v-show="!minimize"/>
