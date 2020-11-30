@@ -2,12 +2,14 @@
   <CChartDoughnut
       :datasets="defaultDatasets"
       :options="options"
-      :labels="['package_A', 'package_B', 'package_C', 'package_D']"
+      :labels="labels"
   />
 </template>
 
 <script>
-import { CChartDoughnut } from '@coreui/vue-chartjs'
+import { CChartDoughnut } from '@coreui/vue-chartjs';
+import json from './chart-colors.json';
+
 export default {
   name: 'DoughnutChart',
   components: { CChartDoughnut },
@@ -18,27 +20,29 @@ export default {
         display: false,
         position: 'bottom'
       }
-    }
+    },
+    colors: []
   }),
   mounted() {
     console.log('char created');
+    console.log(this.colors);
   },
   created() {
     console.log('char created');
+    this.colors = json;
   },
   computed: {
     defaultDatasets () {
+      const numberOfPackages = this.$store.state.treeData.options.length;
       return [
         {
-          backgroundColor: [
-            '#41B883',
-            '#E46651',
-            '#00D8FF',
-            '#DD1B16'
-          ],
-          data: [40, 20, 80, 10],
+          backgroundColor: this.colors.slice(0, numberOfPackages),
+          data: this.$store.state.treeData.options.map(x => x.children.length),
         }
       ]
+    },
+    labels() {
+      return this.$store.state.treeData.options.map(x => x.label);
     }
   }
 }
