@@ -25,6 +25,8 @@
     "jquery": "^3.5.1",
     "ol": "^6.4.3",
     "vue": "~2.6.12",
+    "vue-file-agent": "^1.7.3",
+    "vue-material-design-icons": "^4.11.0",
     "vue-router": "~3.4.3",
     "vue-toasted": "^1.1.28",
     "vue-upload-component": "^2.8.20",

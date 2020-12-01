@@ -27,7 +27,7 @@ export class FileController {
 
   @Post('upload')
   @UseInterceptors(
-    FileInterceptor('filename', {
+    FileInterceptor('file', {
       storage: diskStorage({
         destination: './dist/uploads',
         filename: (req, file, cb) => {
@@ -41,10 +41,11 @@ export class FileController {
       const datas = await this.dataService.getDataFromCsvs();
       await this.fileService.uploadFile(file, datas, res);
       res.send('OK');
+
     } catch (e) {
       throw new HttpException({
         status: HttpStatus.FORBIDDEN,
-        error: 'This is a custom message',
+        error: 'Duplicated',
       }, HttpStatus.FORBIDDEN);
     }
   }

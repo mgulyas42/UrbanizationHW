@@ -26,7 +26,7 @@ export class FileService {
         dataCSV.forEach((data) => {
           Object.keys(datas).forEach((key) => {
             const duplicated = datas[key].filter((d) => d.lng === data[1] && d.lat === data[2]);
-            reject();
+            if (duplicated.length) reject();
           })
         });
 

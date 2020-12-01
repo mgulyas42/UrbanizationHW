@@ -21,7 +21,7 @@ function changeStyleOfSelection(event, style){
 
   if(event.children) {
     event.children.forEach(child => changeStyleOfSelection(child, style));
-    alert('root clicked');
+    //alert('root clicked');
   }
   else {
     const selectedFeature = MarkerService.getSelectedFeature(event.id);
@@ -46,8 +46,8 @@ export default {
       changeStyleOfSelection(event, MarkerService.checkedStyle);
     },
     oninput: function (event) {
-      console.log(event);
-      alert('input changed');
+      console.log('input changed', event);
+      //alert('input changed');
     },
     ondeselect: event => {
       changeStyleOfSelection(event, MarkerService.defaultStyle);

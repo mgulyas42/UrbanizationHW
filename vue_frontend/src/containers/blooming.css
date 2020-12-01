@@ -13,6 +13,10 @@
 }
 
 .blooming-menu__item:nth-of-type(2) .blooming-menu__item-btn {
+    background-image: url(../assets/icons/grade.svg);
+}
+
+.blooming-menu__item:nth-of-type(3) .blooming-menu__item-btn {
     background-image: url(../assets/icons/find-in-page.svg);
 }
 /*
