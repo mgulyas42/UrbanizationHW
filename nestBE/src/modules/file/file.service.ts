@@ -1,19 +1,20 @@
-import { HttpException, HttpStatus, Injectable, UploadedFile } from '@nestjs/common';
+import { Injectable, UploadedFile } from '@nestjs/common';
 import * as extract from "extract-zip";
 import { join, resolve } from "path";
 import * as path from "path";
 import * as fs from "fs";
 import * as AdmZip from "adm-zip";
+import * as CSV from 'csv-string';
 import { Parser } from "json2csv";
 import { Data } from "../data/models/data";
-import * as CSV from 'csv-string';
+
 
 const StreamZip = require('node-stream-zip');
 
 @Injectable()
 export class FileService {
 
-  public uploadFile(@UploadedFile() file, datas: { [key: string]: Data[] }, res) {
+  public uploadFile(@UploadedFile() file, dataset: { [key: string]: Data[] }, res) {
     return new Promise((resolve, reject) => {
       const zip = new StreamZip({
         file: file.path,
@@ -24,8 +25,8 @@ export class FileService {
         const dataCSV = this.fetchCSVFromZip(zip);
         let duplicatedFound: boolean = false;
         dataCSV.forEach((data) => {
-          Object.keys(datas).forEach((key) => {
-            const duplicated = datas[key].filter((d) => d.lng === data[1] && d.lat === data[2]);
+          Object.keys(dataset).forEach((key) => {
+            const duplicated = dataset[key].filter((d) => d.lng === data[1] && d.lat === data[2]);
             if (duplicated.length) reject();
           })
         });
